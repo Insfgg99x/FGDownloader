@@ -41,7 +41,15 @@
     [self.view addSubview:_progressView];
     
     _downloadBtn=[[UIButton alloc]initWithFrame:CGRectMake(kWidth/2-40, kHeight/2-20, 80, 40)];
-    [_downloadBtn setTitle:@"开始下载" forState:UIControlStateNormal];
+    if(_progressView.progress==1.0)
+    {
+        [_downloadBtn setTitle:@"下载完成" forState:UIControlStateNormal];
+        _downloadBtn.enabled=NO;
+    }
+    else if(_progressView.progress>0.0)
+        [_downloadBtn setTitle:@"恢复下载" forState:UIControlStateNormal];
+    else
+        [_downloadBtn setTitle:@"开始下载" forState:UIControlStateNormal];
     [_downloadBtn addTarget:self action:@selector(downloadFile:) forControlEvents:UIControlEventTouchUpInside];
     _downloadBtn.backgroundColor=[UIColor yellowColor];
     [_downloadBtn setTitleColor:[UIColor orangeColor] forState:UIControlStateNormal];
@@ -50,25 +58,24 @@
 //下载
 -(void)downloadFile:(UIButton *)sender
 {
-    if([sender.currentTitle isEqualToString:@"开始下载"])
+    if([sender.currentTitle isEqualToString:@"开始下载"]||[sender.currentTitle isEqualToString:@"恢复下载"])
     {
         [sender setTitle:@"暂停下载" forState:UIControlStateNormal];
         [[FGGDownloader downloader] downloadWithUrlString:kurl toPath:filePath process:^(float progress) {
             _progressView.progress=progress;
         } completion:^{
-            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Note" message:@"Finished!" delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+            UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:@"下载完成✅" delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
             [alert show];
-            [alert dismissWithClickedButtonIndex:0 animated:YES];
-            [sender setTitle:@"Finished" forState:UIControlStateNormal];
-            
+            [sender setTitle:@"下载完成" forState:UIControlStateNormal];
+            sender.enabled=NO;
         } failure:^(NSError *error) {
             UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alert show];
         }];
     }
-    else
+    else if([sender.currentTitle isEqualToString:@"暂停下载"])
     {
-        [sender setTitle:@"开始下载" forState:UIControlStateNormal];
+        [sender setTitle:@"恢复下载" forState:UIControlStateNormal];
         [[FGGDownloader downloader] cancelDownloading];
     }
 }
