@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TaskCellID" id="KGk-i7-Jjw" customClass="TaskCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yf7-o1-j1l">
+                        <rect key="frame" x="10" y="35" width="50" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="44s-Tu-ygr"/>
+                            <constraint firstAttribute="width" constant="50" id="Cdl-mJ-dQQ"/>
+                        </constraints>
+                        <state key="normal" title="download">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="downloadAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="e6y-dm-k80"/>
+                        </connections>
+                    </button>
+                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kt2-PG-zyD">
+                        <rect key="frame" x="70" y="44" width="230" height="2"/>
+                    </progressView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpo-bi-6wi">
+                        <rect key="frame" x="10" y="5" width="200" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kz3-tn-Wdt">
+                        <rect key="frame" x="240" y="20" width="60" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="2pR-In-e3h"/>
+                            <constraint firstAttribute="width" constant="60" id="iQx-TO-H8n"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Yf7-o1-j1l" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="35" id="DX7-cq-JLK"/>
+                    <constraint firstItem="kt2-PG-zyD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="44" id="FBB-Kp-LKG"/>
+                    <constraint firstItem="Yf7-o1-j1l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="IJl-oO-md8"/>
+                    <constraint firstItem="Kz3-tn-Wdt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="JYx-Nv-oZs"/>
+                    <constraint firstItem="kt2-PG-zyD" firstAttribute="leading" secondItem="Yf7-o1-j1l" secondAttribute="trailing" constant="10" id="O0S-uB-Vw8"/>
+                    <constraint firstAttribute="trailing" secondItem="Kz3-tn-Wdt" secondAttribute="trailing" constant="20" id="mOn-Rp-TbO"/>
+                    <constraint firstAttribute="trailing" secondItem="kt2-PG-zyD" secondAttribute="trailing" constant="20" id="pdQ-6W-ICw"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="downloadBtn" destination="Yf7-o1-j1l" id="hYb-tF-jMc"/>
+                <outlet property="nameLabel" destination="Wpo-bi-6wi" id="daZ-oF-Rbh"/>
+                <outlet property="progressLabel" destination="Kz3-tn-Wdt" id="RBK-ho-IVG"/>
+                <outlet property="progressView" destination="kt2-PG-zyD" id="kIb-DO-1pt"/>
+            </connections>
+            <point key="canvasLocation" x="61" y="242"/>
+        </tableViewCell>
+    </objects>
+</document>

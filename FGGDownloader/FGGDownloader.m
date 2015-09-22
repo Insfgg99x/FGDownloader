@@ -9,27 +9,19 @@
 #import "FGGDownloader.h"
 #import <UIKit/UIKit.h>
 
-static FGGDownloader *downloader=nil;
-
 @implementation FGGDownloader
 {
     NSString *_url_string;
     NSString *_destination_path;
-    NSInteger _total_length;
-    NSURLConnection *_connection;
     NSFileHandle *_writeHandle;
+    NSURLConnection *_con;
 }
 /**
  * 获取对象的类方法
  */
 +(instancetype)downloader
 {
-    @synchronized(self)
-    {
-        if(!downloader)
-            downloader=[[FGGDownloader alloc]init];
-    }
-    return downloader;
+    return [[[self class] alloc]init];
 }
 /**
  *  断点下载
@@ -60,26 +52,25 @@ static FGGDownloader *downloader=nil;
             NSString *rangeString=[NSString stringWithFormat:@"bytes=%ld-",length];
             [request setValue:rangeString forHTTPHeaderField:@"Range"];
         }
-        _connection=[NSURLConnection connectionWithRequest:request delegate:self];
+        _con=[NSURLConnection connectionWithRequest:request delegate:self];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     }
 }
 /**
- * 取消下载
+ *  取消下载
  */
--(void)cancelDownloading
++(void)cancelDownloadTask:(FGGDownloader *)downloader
 {
-    [_connection cancel];
-    _connection=nil;
+    [downloader.con cancel];
+    downloader.con=nil;
 }
 /**
  * 获取上一次的下载进度
  */
--(float)lastProgress
++(float)lastProgress:(NSString *)url
 {
-    NSString *urlSting=[[NSUserDefaults standardUserDefaults]objectForKey:@"urlString"];
-    if(urlSting)
-        return [[NSUserDefaults standardUserDefaults]floatForKey:[NSString stringWithFormat:@"%@progress",urlSting]];
+    if(url)
+        return [[NSUserDefaults standardUserDefaults]floatForKey:[NSString stringWithFormat:@"%@progress",url]];
     return 0.0;
 }
 #pragma mark - NSURLConnection
@@ -96,13 +87,14 @@ static FGGDownloader *downloader=nil;
  */
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    _total_length=response.expectedContentLength;
-    NSLog(@"%@",response.suggestedFilename);
+    NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
     NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
-    [usd setInteger:_total_length forKey:_url_string];
-    [usd setObject:_url_string forKey:@"urlString"];
-    [usd synchronize];
-    
+    NSInteger totalLength=[usd integerForKey:key];
+    if(totalLength==0)
+    {
+        [usd setInteger:response.expectedContentLength forKey:key];
+        [usd synchronize];
+    }
     NSFileManager *fileManager=[NSFileManager defaultManager];
     BOOL fileExist=[fileManager fileExistsAtPath:_destination_path];
     if(!fileExist)
@@ -117,19 +109,20 @@ static FGGDownloader *downloader=nil;
     [_writeHandle seekToEndOfFile];
     [_writeHandle writeData:data];
     NSInteger length=[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
-    float progress=(float)length/_total_length;
+    NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
+    NSInteger totalLength=[[NSUserDefaults standardUserDefaults] integerForKey:key];
+    NSLog(@"%ld",totalLength);
+    float progress=(float)length/totalLength;
     [[NSUserDefaults standardUserDefaults]setFloat:progress forKey:[NSString stringWithFormat:@"%@progress",_url_string]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     if(_process)
         _process(progress);
-    
 }
 /**
  * 下载完成
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [self cancelDownloading];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     if(_completion)
         _completion();

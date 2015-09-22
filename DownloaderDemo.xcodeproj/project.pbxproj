@@ -15,6 +15,9 @@
 		E85AD0431BAFC0E600588FC9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E85AD0411BAFC0E600588FC9 /* LaunchScreen.xib */; };
 		E85AD04F1BAFC0E600588FC9 /* DownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD04E1BAFC0E600588FC9 /* DownloaderDemoTests.m */; };
 		E85AD05D1BAFC1D100588FC9 /* FGGDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */; };
+		E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F64B0C1BB1010000899E45 /* TaskCell.m */; };
+		E8F64B0F1BB1010000899E45 /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8F64B0D1BB1010000899E45 /* TaskCell.xib */; };
+		E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F64B111BB1033C00899E45 /* TaskModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,11 @@
 		E85AD04E1BAFC0E600588FC9 /* DownloaderDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloaderDemoTests.m; sourceTree = "<group>"; };
 		E85AD0591BAFC1D100588FC9 /* FGGDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGGDownloader.h; sourceTree = "<group>"; };
 		E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGGDownloader.m; sourceTree = "<group>"; };
+		E8F64B0B1BB1010000899E45 /* TaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
+		E8F64B0C1BB1010000899E45 /* TaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
+		E8F64B0D1BB1010000899E45 /* TaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
+		E8F64B101BB1033C00899E45 /* TaskModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskModel.h; sourceTree = "<group>"; };
+		E8F64B111BB1033C00899E45 /* TaskModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +97,11 @@
 				E85AD0371BAFC0E600588FC9 /* AppDelegate.m */,
 				E85AD0391BAFC0E600588FC9 /* ViewController.h */,
 				E85AD03A1BAFC0E600588FC9 /* ViewController.m */,
+				E8F64B0B1BB1010000899E45 /* TaskCell.h */,
+				E8F64B0C1BB1010000899E45 /* TaskCell.m */,
+				E8F64B0D1BB1010000899E45 /* TaskCell.xib */,
+				E8F64B101BB1033C00899E45 /* TaskModel.h */,
+				E8F64B111BB1033C00899E45 /* TaskModel.m */,
 				E85AD03C1BAFC0E600588FC9 /* Main.storyboard */,
 				E85AD03F1BAFC0E600588FC9 /* Images.xcassets */,
 				E85AD0411BAFC0E600588FC9 /* LaunchScreen.xib */,
@@ -212,6 +225,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E8F64B0F1BB1010000899E45 /* TaskCell.xib in Resources */,
 				E85AD03E1BAFC0E600588FC9 /* Main.storyboard in Resources */,
 				E85AD0431BAFC0E600588FC9 /* LaunchScreen.xib in Resources */,
 				E85AD0401BAFC0E600588FC9 /* Images.xcassets in Resources */,
@@ -234,6 +248,8 @@
 			files = (
 				E85AD03B1BAFC0E600588FC9 /* ViewController.m in Sources */,
 				E85AD05D1BAFC1D100588FC9 /* FGGDownloader.m in Sources */,
+				E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */,
+				E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */,
 				E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */,
 				E85AD0351BAFC0E600588FC9 /* main.m in Sources */,
 			);
@@ -430,6 +446,7 @@
 				E85AD0541BAFC0E600588FC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E85AD0551BAFC0E600588FC9 /* Build configuration list for PBXNativeTarget "DownloaderDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -438,6 +455,7 @@
 				E85AD0571BAFC0E600588FC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
