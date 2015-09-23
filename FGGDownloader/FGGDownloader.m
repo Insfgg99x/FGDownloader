@@ -15,6 +15,25 @@
     NSString *_destination_path;
     NSFileHandle *_writeHandle;
     NSURLConnection *_con;
+    NSInteger _lastSize;
+    NSInteger _growth;
+    NSTimer *_timer;
+}
+//计算一次文件大小增加部分的尺寸
+-(void)getGrowthSize
+{
+    NSInteger size=[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
+    _growth=size-_lastSize;
+    _lastSize=size;
+}
+-(instancetype)init
+{
+    if(self=[super init])
+    {
+        //每0.5秒计算一次文件大小增加部分的尺寸
+        _timer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(getGrowthSize) userInfo:nil repeats:YES];
+    }
+    return self;
 }
 /**
  * 获取对象的类方法
@@ -53,16 +72,19 @@
             [request setValue:rangeString forHTTPHeaderField:@"Range"];
         }
         _con=[NSURLConnection connectionWithRequest:request delegate:self];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     }
 }
 /**
  *  取消下载
  */
-+(void)cancelDownloadTask:(FGGDownloader *)downloader
+-(void)cancel
 {
-    [downloader.con cancel];
-    downloader.con=nil;
+    [self.con cancel];
+    self.con=nil;
+    if(_timer)
+    {
+        [_timer invalidate];
+    }
 }
 /**
  * 获取上一次的下载进度
@@ -138,16 +160,21 @@
     
     //获取文件大小，格式为：格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
     NSString *sizeString=[FGGDownloader filesSize:_url_string];
+    
+    //计算网速
+    NSString *speedString=@"0.00Kb/s";
+    NSString *growString=[FGGDownloader convertSize:_growth*2];
+    speedString=[NSString stringWithFormat:@"%@/s",growString];
+    
     //回调下载过程中的代码块
     if(_process)
-        _process(progress,sizeString);
+        _process(progress,sizeString,speedString);
 }
 /**
  * 下载完成
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     if(_completion)
         _completion();
 }
@@ -161,7 +188,7 @@
     if(length<1024)
         return [NSString stringWithFormat:@"%ldB",(long)length];
     else if(length>=1024&&length<1024*1024)
-        return [NSString stringWithFormat:@"%.2fK",(float)length/1024];
+        return [NSString stringWithFormat:@"%.1fK",(float)length/1024];
     else if(length >=1024*1024&&length<1024*1024*1024)
         return [NSString stringWithFormat:@"%.2fM",(float)length/(1024*1024)];
     else

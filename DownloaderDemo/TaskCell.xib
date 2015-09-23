@@ -32,16 +32,16 @@
                         <rect key="frame" x="70" y="44" width="230" height="2"/>
                     </progressView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpo-bi-6wi">
-                        <rect key="frame" x="10" y="0.0" width="300" height="20"/>
+                        <rect key="frame" x="10" y="0.0" width="200" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="nwM-Zu-KbR"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00%" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kz3-tn-Wdt">
-                        <rect key="frame" x="240" y="20" width="60" height="20"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00%" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kz3-tn-Wdt">
+                        <rect key="frame" x="250" y="20" width="60" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="2pR-In-e3h"/>
                             <constraint firstAttribute="width" constant="60" id="iQx-TO-H8n"/>
@@ -57,13 +57,19 @@
                             <constraint firstAttribute="width" constant="200" id="zdP-B5-YQP"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0.0Kb/s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nt2-4V-qu5" userLabel="speedlabel">
+                        <rect key="frame" x="220" y="5" width="90" height="10"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.017010567477997784" green="1" blue="0.0027813522092662302" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Wpo-bi-6wi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="1dZ-U1-sB7"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="Wpo-bi-6wi" secondAttribute="trailing" constant="2" id="6Yd-Dk-sxD"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Wpo-bi-6wi" secondAttribute="trailing" constant="102" id="6Yd-Dk-sxD"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="35" id="DX7-cq-JLK"/>
                     <constraint firstItem="kt2-PG-zyD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="44" id="FBB-Kp-LKG"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="IJl-oO-md8"/>
@@ -72,7 +78,7 @@
                     <constraint firstItem="kt2-PG-zyD" firstAttribute="leading" secondItem="Yf7-o1-j1l" secondAttribute="trailing" constant="10" id="O0S-uB-Vw8"/>
                     <constraint firstItem="S9G-zX-UkS" firstAttribute="top" secondItem="Wpo-bi-6wi" secondAttribute="bottom" constant="5" id="cZY-Js-6Qq"/>
                     <constraint firstItem="S9G-zX-UkS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="lAO-AA-CdM"/>
-                    <constraint firstAttribute="trailing" secondItem="Kz3-tn-Wdt" secondAttribute="trailing" constant="20" id="mOn-Rp-TbO"/>
+                    <constraint firstAttribute="trailing" secondItem="Kz3-tn-Wdt" secondAttribute="trailing" constant="10" id="mOn-Rp-TbO"/>
                     <constraint firstAttribute="trailing" secondItem="kt2-PG-zyD" secondAttribute="trailing" constant="20" id="pdQ-6W-ICw"/>
                 </constraints>
             </tableViewCellContentView>
@@ -82,6 +88,7 @@
                 <outlet property="progressLabel" destination="Kz3-tn-Wdt" id="RBK-ho-IVG"/>
                 <outlet property="progressView" destination="kt2-PG-zyD" id="kIb-DO-1pt"/>
                 <outlet property="sizeLabel" destination="S9G-zX-UkS" id="h43-hC-JBa"/>
+                <outlet property="speedLabel" destination="Nt2-4V-qu5" id="EDT-rE-lDd"/>
             </connections>
             <point key="canvasLocation" x="61" y="242"/>
         </tableViewCell>

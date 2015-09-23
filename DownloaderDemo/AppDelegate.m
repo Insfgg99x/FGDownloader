@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "FGGDownloader.h"
+#import "FGGDownloadManager.h"
 #import "ViewController.h"
 
 @interface AppDelegate ()
@@ -40,10 +40,7 @@
 //程序将要结束时，取消下载
 - (void)applicationWillTerminate:(UIApplication *)application {
     
-    [_vc.taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        FGGDownloader *downloader=obj;
-        [FGGDownloader cancelDownloadTask:downloader];
-    }];
+    [[FGGDownloadManager shredManager] cancelAllTasks];
 }
 
 @end

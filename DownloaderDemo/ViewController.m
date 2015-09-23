@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "FGGDownloader.h"
+#import "FGGDownloadManager.h"
 #import "TaskCell.h"
 
 #define kWidth [UIScreen mainScreen].bounds.size.width
@@ -40,8 +40,6 @@
 -(void)prepareData
 {
     _dataArray=[NSMutableArray array];
-    _taskDict=[NSMutableDictionary dictionary];
-    
     TaskModel *model=[TaskModel model];
     model.name=@"GDTSDK.zip";
     model.url=@"http://imgcache.qq.com/qzone/biz/gdt/dev/sdk/ios/release/GDT_iOS_SDK.zip";
@@ -81,41 +79,42 @@
         if([sender.currentTitle isEqualToString:@"开始"]||[sender.currentTitle isEqualToString:@"恢复"])
         {
             [sender setTitle:@"暂停" forState:UIControlStateNormal];
-            FGGDownloader *downloader=[FGGDownloader downloader];
+            
             //添加下载任务
-            [_taskDict setObject:downloader forKey:model.url];
-            //下载
-            [downloader downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString) {
+            [[FGGDownloadManager shredManager] downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
                 //更新进度条的进度值
                 weakCell.progressView.progress=progress;
                 //更新进度值文字
                 weakCell.progressLabel.text=[NSString stringWithFormat:@"%.2f%%",progress*100];
                 //更新文件已下载的大小
                 weakCell.sizeLabel.text=sizeString;
+                //显示网速
+                weakCell.speedLabel.text=speedString;
+                if(speedString)
+                    weakCell.speedLabel.hidden=NO;
+
             } completion:^{
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@下载完成✅",model.name] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
-                [alert show];
                 [sender setTitle:@"完成" forState:UIControlStateNormal];
                 sender.enabled=NO;
+                weakCell.speedLabel.hidden=YES;
+                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@下载完成✅",model.name] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
+                [alert show];
+
             } failure:^(NSError *error) {
-                
-                FGGDownloader *downloader=[_taskDict objectForKey:model.url];
-                [FGGDownloader cancelDownloadTask:downloader];
+                [[FGGDownloadManager shredManager] cancelDownloadTask:model.url];
                 [sender setTitle:@"恢复" forState:UIControlStateNormal];
+                weakCell.speedLabel.hidden=YES;
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
+
             }];
         }
         else if([sender.currentTitle isEqualToString:@"暂停"])
         {
             [sender setTitle:@"恢复" forState:UIControlStateNormal];
-            FGGDownloader *downloader=[_taskDict objectForKey:model.url];
-            [FGGDownloader cancelDownloadTask:downloader];
-            [_taskDict removeObjectForKey:model.url];
-            if(_taskDict.count==0)
-            {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            }
+            [[FGGDownloadManager shredManager] cancelDownloadTask:model.url];
+            TaskCell *cell=[tableView cellForRowAtIndexPath:indexPath];
+            cell.speedLabel.hidden=YES;
         }
     };
     cell.selectionStyle=UITableViewCellSelectionStyleNone;

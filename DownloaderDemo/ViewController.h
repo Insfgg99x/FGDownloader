@@ -10,7 +10,6 @@
 
 @interface ViewController : UIViewController
 
-@property(nonatomic,strong)NSMutableDictionary *taskDict;
 
 @end
 

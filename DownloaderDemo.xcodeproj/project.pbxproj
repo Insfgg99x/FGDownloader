@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E80BFD701BB2CE29003EF9C0 /* FGGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E80BFD6F1BB2CE29003EF9C0 /* FGGDownloadManager.m */; settings = {ASSET_TAGS = (); }; };
 		E85AD0351BAFC0E600588FC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0341BAFC0E600588FC9 /* main.m */; };
 		E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0371BAFC0E600588FC9 /* AppDelegate.m */; };
 		E85AD03B1BAFC0E600588FC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD03A1BAFC0E600588FC9 /* ViewController.m */; };
@@ -31,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E80BFD6E1BB2CE29003EF9C0 /* FGGDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGGDownloadManager.h; sourceTree = "<group>"; };
+		E80BFD6F1BB2CE29003EF9C0 /* FGGDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGGDownloadManager.m; sourceTree = "<group>"; };
 		E85AD02F1BAFC0E600588FC9 /* DownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85AD0331BAFC0E600588FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E85AD0341BAFC0E600588FC9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -141,6 +144,8 @@
 			children = (
 				E85AD0591BAFC1D100588FC9 /* FGGDownloader.h */,
 				E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */,
+				E80BFD6E1BB2CE29003EF9C0 /* FGGDownloadManager.h */,
+				E80BFD6F1BB2CE29003EF9C0 /* FGGDownloadManager.m */,
 			);
 			path = FGGDownloader;
 			sourceTree = "<group>";
@@ -246,6 +251,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E80BFD701BB2CE29003EF9C0 /* FGGDownloadManager.m in Sources */,
 				E85AD03B1BAFC0E600588FC9 /* ViewController.m in Sources */,
 				E85AD05D1BAFC1D100588FC9 /* FGGDownloader.m in Sources */,
 				E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */,
