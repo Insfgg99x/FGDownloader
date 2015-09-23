@@ -2,7 +2,7 @@
 用于断点续传，退出程序后，下次启动后，恢复下载从上次下载位置开始下载
 /*
 
-![演示](file:///Users/xiaguifeng/Desktop/demo.gif)
+![演示](https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif)
 
 FGGDownloader简介<br>
 -----------------------------------------------------------------------------------------
