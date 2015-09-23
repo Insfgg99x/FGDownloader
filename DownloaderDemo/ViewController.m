@@ -12,7 +12,7 @@
 
 #define kWidth [UIScreen mainScreen].bounds.size.width
 #define kHeight [UIScreen mainScreen].bounds.size.height
-#define kDocPath (NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0])
+#define kCachePath (NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0])
 
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -45,15 +45,13 @@
     TaskModel *model=[TaskModel model];
     model.name=@"GDTSDK.zip";
     model.url=@"http://imgcache.qq.com/qzone/biz/gdt/dev/sdk/ios/release/GDT_iOS_SDK.zip";
-    model.destinationPath=[kDocPath stringByAppendingPathComponent:model.name];
+    model.destinationPath=[kCachePath stringByAppendingPathComponent:model.name];
     [_dataArray addObject:model];
-    
-    NSLog(@"%@",model.destinationPath);
     
     TaskModel *anotherModel=[TaskModel model];
     anotherModel.name=@"CONTENT.jar";
     anotherModel.url=@"http://android-mirror.bugly.qq.com:8080/eclipse_mirror/juno/content.jar";
-    anotherModel.destinationPath=[kDocPath stringByAppendingPathComponent:anotherModel.name];
+    anotherModel.destinationPath=[kCachePath stringByAppendingPathComponent:anotherModel.name];
     [_dataArray addObject:anotherModel];
 }
 //创建表视图
@@ -84,12 +82,16 @@
         {
             [sender setTitle:@"暂停" forState:UIControlStateNormal];
             FGGDownloader *downloader=[FGGDownloader downloader];
-            
+            //添加下载任务
             [_taskDict setObject:downloader forKey:model.url];
-            
-            [downloader downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress) {
+            //下载
+            [downloader downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString) {
+                //更新进度条的进度值
                 weakCell.progressView.progress=progress;
+                //更新进度值文字
                 weakCell.progressLabel.text=[NSString stringWithFormat:@"%.2f%%",progress*100];
+                //更新文件已下载的大小
+                weakCell.sizeLabel.text=sizeString;
             } completion:^{
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@下载完成✅",model.name] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
                 [alert show];

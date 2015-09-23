@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,10 +12,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yf7-o1-j1l">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yf7-o1-j1l">
                         <rect key="frame" x="10" y="35" width="50" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="44s-Tu-ygr"/>
@@ -29,9 +31,12 @@
                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kt2-PG-zyD">
                         <rect key="frame" x="70" y="44" width="230" height="2"/>
                     </progressView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpo-bi-6wi">
-                        <rect key="frame" x="10" y="5" width="200" height="20"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wpo-bi-6wi">
+                        <rect key="frame" x="10" y="0.0" width="300" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="nwM-Zu-KbR"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -45,13 +50,28 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.00M/0.00M" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S9G-zX-UkS" userLabel="sizeLabel">
+                        <rect key="frame" x="10" y="25" width="200" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="7m3-1f-jt9"/>
+                            <constraint firstAttribute="width" constant="200" id="zdP-B5-YQP"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="Wpo-bi-6wi" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="1dZ-U1-sB7"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Wpo-bi-6wi" secondAttribute="trailing" constant="2" id="6Yd-Dk-sxD"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="35" id="DX7-cq-JLK"/>
                     <constraint firstItem="kt2-PG-zyD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="44" id="FBB-Kp-LKG"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="IJl-oO-md8"/>
                     <constraint firstItem="Kz3-tn-Wdt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="JYx-Nv-oZs"/>
+                    <constraint firstItem="Wpo-bi-6wi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-8" id="JdP-ya-ZBB"/>
                     <constraint firstItem="kt2-PG-zyD" firstAttribute="leading" secondItem="Yf7-o1-j1l" secondAttribute="trailing" constant="10" id="O0S-uB-Vw8"/>
+                    <constraint firstItem="S9G-zX-UkS" firstAttribute="top" secondItem="Wpo-bi-6wi" secondAttribute="bottom" constant="5" id="cZY-Js-6Qq"/>
+                    <constraint firstItem="S9G-zX-UkS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="lAO-AA-CdM"/>
                     <constraint firstAttribute="trailing" secondItem="Kz3-tn-Wdt" secondAttribute="trailing" constant="20" id="mOn-Rp-TbO"/>
                     <constraint firstAttribute="trailing" secondItem="kt2-PG-zyD" secondAttribute="trailing" constant="20" id="pdQ-6W-ICw"/>
                 </constraints>
@@ -61,6 +81,7 @@
                 <outlet property="nameLabel" destination="Wpo-bi-6wi" id="daZ-oF-Rbh"/>
                 <outlet property="progressLabel" destination="Kz3-tn-Wdt" id="RBK-ho-IVG"/>
                 <outlet property="progressView" destination="kt2-PG-zyD" id="kIb-DO-1pt"/>
+                <outlet property="sizeLabel" destination="S9G-zX-UkS" id="h43-hC-JBa"/>
             </connections>
             <point key="canvasLocation" x="61" y="242"/>
         </tableViewCell>

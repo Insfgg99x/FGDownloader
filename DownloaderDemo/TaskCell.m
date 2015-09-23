@@ -31,6 +31,7 @@
     if(exist)
     {
         _progressView.progress=[FGGDownloader lastProgress:model.url];
+        _sizeLabel.text=[FGGDownloader filesSize:model.url];
         _progressLabel.text=[NSString stringWithFormat:@"%.2f%%",_progressView.progress*100];
     }
     if(_progressView.progress==1.0)

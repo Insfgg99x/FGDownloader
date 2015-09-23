@@ -11,15 +11,17 @@
  基于UNSURLConnection封装的断点续传类，用于大文件下载，退出程序后，下次接着下载。
  用法简介：
  -->1.在项目中导入FGGDownloader.h头文件；
- -->2.搭建UI时，设置显示进度的UIProgressView的进度值:[FGGDownloader lastProgressWithUrl:urlString],
+ -->2.搭建UI时，设置显示进度的UIProgressView的进度值:[FGGDownloader lastProgressWithUrl:],
       这个方法的返回值是float类型的；
+      设置显示文件大小/文件总大小的Label的文字：[FGGDownloader lastProgressWithUrl:]；
+ 
  -->3.开始或恢复下载任务的方法：downloadWithUrlString:(NSString *)urlString
                                                         toPath:(NSString *)destinationPath
                                                        process:(ProcessHandle)process
                                                     completion:(CompletionHandle)completion
                                                        failure:(FailureHandle)failure
       这个方法包含三个回调代码块，分别是：
-      1)下载过程中的回调代码块，带一个下载进度参数progress；
+      1)下载过程中的回调代码块，带2个参数：下载进度参数progress，已下载文件大小sizeString；
       2)下载成功回调的代码块，没有参数；
       3)下载失败的回调代码块，带一个下载错误参数error。
  
@@ -40,14 +42,17 @@ Copyright (c) 2015年 夏桂峰. All rights reserved.
 
 #import <Foundation/Foundation.h>
 
-typedef void (^ProcessHandle)(float progress);
+typedef void (^ProcessHandle)(float progress,NSString *sizeString);
 typedef void (^CompletionHandle)();
 typedef void (^FailureHandle)(NSError *error);
 
 @interface FGGDownloader : NSObject<NSURLConnectionDataDelegate,NSURLConnectionDelegate>
 
+//下载过程中回调的代码块，会多次调用。
 @property(nonatomic,copy,readonly)ProcessHandle process;
+//下载完成回调的代码块
 @property(nonatomic,copy,readonly)CompletionHandle completion;
+//下载失败的回调代码块
 @property(nonatomic,copy,readonly)FailureHandle failure;
 
 @property(nonatomic,strong)NSURLConnection *con;
@@ -77,6 +82,10 @@ typedef void (^FailureHandle)(NSError *error);
  * 获取上一次的下载进度
  */
 +(float)lastProgress:(NSString *)url;
-
+/**获取文件已下载的大小和总大小,格式为:已经下载的大小/文件总大小,如：12.00M/100.00M。
+ *
+ * @param url 下载链接
+ */
++(NSString *)filesSize:(NSString *)url;
 
 @end

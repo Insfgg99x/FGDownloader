@@ -73,6 +73,25 @@
         return [[NSUserDefaults standardUserDefaults]floatForKey:[NSString stringWithFormat:@"%@progress",url]];
     return 0.0;
 }
+/**获取文件已下载的大小和总大小,格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
+ */
++(NSString *)filesSize:(NSString *)url
+{
+    NSString *totalLebgthKey=[NSString stringWithFormat:@"%@totalLength",url];
+    NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
+    NSInteger totalLength=[usd integerForKey:totalLebgthKey];
+    if(totalLength==0)
+    {
+        return @"0.00K/0.00K";
+    }
+    NSString *progressKey=[NSString stringWithFormat:@"%@progress",url];
+    float progress=[[NSUserDefaults standardUserDefaults] floatForKey:progressKey];
+    NSInteger currentLength=progress*totalLength;
+    
+    NSString *currentSize=[self convertSize:currentLength];
+    NSString *totalSize=[self convertSize:totalLength];
+    return [NSString stringWithFormat:@"%@/%@",currentSize,totalSize];
+}
 #pragma mark - NSURLConnection
 /**
  * 下载失败
@@ -111,12 +130,17 @@
     NSInteger length=[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
     NSInteger totalLength=[[NSUserDefaults standardUserDefaults] integerForKey:key];
-    NSLog(@"%ld",totalLength);
+    
+    //计算下载进度
     float progress=(float)length/totalLength;
     [[NSUserDefaults standardUserDefaults]setFloat:progress forKey:[NSString stringWithFormat:@"%@progress",_url_string]];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    //获取文件大小，格式为：格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
+    NSString *sizeString=[FGGDownloader filesSize:_url_string];
+    //回调下载过程中的代码块
     if(_process)
-        _process(progress);
+        _process(progress,sizeString);
 }
 /**
  * 下载完成
@@ -126,5 +150,21 @@
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     if(_completion)
         _completion();
+}
+/**
+ * 计算缓存的占用存储大小
+ *
+ * @prama length  文件大小
+ */
++(NSString *)convertSize:(NSInteger)length
+{
+    if(length<1024)
+        return [NSString stringWithFormat:@"%ldB",(long)length];
+    else if(length>=1024&&length<1024*1024)
+        return [NSString stringWithFormat:@"%.2fK",(float)length/1024];
+    else if(length >=1024*1024&&length<1024*1024*1024)
+        return [NSString stringWithFormat:@"%.2fM",(float)length/(1024*1024)];
+    else
+        return [NSString stringWithFormat:@"%.2fG",(float)length/(1024*1024*1024)];
 }
 @end
