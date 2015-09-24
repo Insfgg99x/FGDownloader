@@ -60,8 +60,12 @@
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="0.0Kb/s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nt2-4V-qu5" userLabel="speedlabel">
+                    <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.0Kb/s" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nt2-4V-qu5" userLabel="speedlabel">
                         <rect key="frame" x="220" y="5" width="90" height="10"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="10" id="NtH-FP-37N"/>
+                            <constraint firstAttribute="width" constant="90" id="g9r-PR-3aS"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" red="0.017010567477997784" green="1" blue="0.0027813522092662302" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -72,6 +76,7 @@
                     <constraint firstAttribute="trailingMargin" secondItem="Wpo-bi-6wi" secondAttribute="trailing" constant="102" id="6Yd-Dk-sxD"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="35" id="DX7-cq-JLK"/>
                     <constraint firstItem="kt2-PG-zyD" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="44" id="FBB-Kp-LKG"/>
+                    <constraint firstItem="Nt2-4V-qu5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-3" id="HUX-W0-6gu"/>
                     <constraint firstItem="Yf7-o1-j1l" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="IJl-oO-md8"/>
                     <constraint firstItem="Kz3-tn-Wdt" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="JYx-Nv-oZs"/>
                     <constraint firstItem="Wpo-bi-6wi" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="-8" id="JdP-ya-ZBB"/>
@@ -79,6 +84,7 @@
                     <constraint firstItem="S9G-zX-UkS" firstAttribute="top" secondItem="Wpo-bi-6wi" secondAttribute="bottom" constant="5" id="cZY-Js-6Qq"/>
                     <constraint firstItem="S9G-zX-UkS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="2" id="lAO-AA-CdM"/>
                     <constraint firstAttribute="trailing" secondItem="Kz3-tn-Wdt" secondAttribute="trailing" constant="10" id="mOn-Rp-TbO"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Nt2-4V-qu5" secondAttribute="trailing" constant="2" id="nKR-LZ-wBd"/>
                     <constraint firstAttribute="trailing" secondItem="kt2-PG-zyD" secondAttribute="trailing" constant="20" id="pdQ-6W-ICw"/>
                 </constraints>
             </tableViewCellContentView>

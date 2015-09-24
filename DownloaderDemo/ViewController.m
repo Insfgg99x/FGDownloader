@@ -30,7 +30,7 @@
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
     self.navigationController.navigationBar.barStyle=UIBarStyleBlackOpaque;
-    self.title=@"断点续传Demo";
+    self.title=@"FGGDownloadManager Demo";
     self.automaticallyAdjustsScrollViewInsets=NO;
     [self prepareData];
     [self createTableView];
