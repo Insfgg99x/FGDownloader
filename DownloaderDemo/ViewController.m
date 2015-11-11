@@ -113,7 +113,7 @@
         {
             [sender setTitle:@"恢复" forState:UIControlStateNormal];
             [[FGGDownloadManager shredManager] cancelDownloadTask:model.url];
-            TaskCell *cell=[tableView cellForRowAtIndexPath:indexPath];
+            TaskCell *cell=(TaskCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.speedLabel.hidden=YES;
         }
     };

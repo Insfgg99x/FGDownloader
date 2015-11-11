@@ -50,7 +50,7 @@ static FGGDownloadManager *mgr=nil;
 }
 -(void)cancelAllTasks
 {
-    [_taskDict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+    [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         FGGDownloader *downloader=obj;
         [downloader cancel];
         [_taskDict removeObjectForKey:key];
