@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E80BFD701BB2CE29003EF9C0 /* FGGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E80BFD6F1BB2CE29003EF9C0 /* FGGDownloadManager.m */; settings = {ASSET_TAGS = (); }; };
+		E80BFD701BB2CE29003EF9C0 /* FGGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E80BFD6F1BB2CE29003EF9C0 /* FGGDownloadManager.m */; };
 		E85AD0351BAFC0E600588FC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0341BAFC0E600588FC9 /* main.m */; };
 		E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0371BAFC0E600588FC9 /* AppDelegate.m */; };
 		E85AD03B1BAFC0E600588FC9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD03A1BAFC0E600588FC9 /* ViewController.m */; };
@@ -199,6 +199,11 @@
 				TargetAttributes = {
 					E85AD02E1BAFC0E600588FC9 = {
 						CreatedOnToolsVersion = 6.4;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					E85AD0471BAFC0E600588FC9 = {
 						CreatedOnToolsVersion = 6.4;
