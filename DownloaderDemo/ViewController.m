@@ -70,7 +70,7 @@
     static NSString *cellId=@"TaskCellID";
     TaskCell *cell=[tableView dequeueReusableCellWithIdentifier:cellId];
     if(!cell)
-        cell=[[[NSBundle mainBundle] loadNibNamed:@"TaskCell" owner:nil options:nil] lastObject];
+        cell=[[[NSBundle mainBundle] loadNibNamed:@"TaskCell" owner:nil options:nil] lastObject];  
     TaskModel *model=_dataArray[indexPath.row];
     [cell cellWithModel:model];
     //点击下载按钮时回调的代码块

@@ -11,13 +11,13 @@
 
 @implementation FGGDownloader
 {
-    NSString *_url_string;
-    NSString *_destination_path;
-    NSFileHandle *_writeHandle;
+    NSString        *_url_string;
+    NSString        *_destination_path;
+    NSFileHandle    *_writeHandle;
     NSURLConnection *_con;
-    NSInteger _lastSize;
-    NSInteger _growth;
-    NSTimer *_timer;
+    NSInteger       _lastSize;
+    NSInteger       _growth;
+    NSTimer         *_timer;
 }
 //计算一次文件大小增加部分的尺寸
 -(void)getGrowthSize

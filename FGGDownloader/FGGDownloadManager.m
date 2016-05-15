@@ -35,7 +35,9 @@ static FGGDownloadManager *mgr=nil;
 -(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure
 {
     FGGDownloader *downloader=[FGGDownloader downloader];
-    [_taskDict setObject:downloader forKey:urlString];
+    @synchronized (self) {
+        [_taskDict setObject:downloader forKey:urlString];
+    }
     [downloader downloadWithUrlString:urlString
                                toPath:destinationPath
                               process:process
@@ -46,7 +48,9 @@ static FGGDownloadManager *mgr=nil;
 {
     FGGDownloader *downloader=[_taskDict objectForKey:url];
     [downloader cancel];
-    [_taskDict removeObjectForKey:url];
+    @synchronized (self) {
+        [_taskDict removeObjectForKey:url];
+    }
 }
 -(void)cancelAllTasks
 {
