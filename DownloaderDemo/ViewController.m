@@ -18,9 +18,10 @@
 {
     UIButton        *_downloadBtn;
     UIProgressView  *_progressView;
-    UITableView     *_tbView;
     NSMutableArray  *_dataArray;
 }
+@property(nonatomic,strong)UITableView  *tbView;
+
 @end
 
 @implementation ViewController
@@ -123,5 +124,23 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60;
+}
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    TaskModel *model=[_dataArray objectAtIndex:indexPath.row];
+    [[FGGDownloadManager shredManager] removeForUrl:model.url file:model.destinationPath];
+    [_dataArray removeObjectAtIndex:indexPath.row];
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    __weak typeof(self) wkself=self;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [wkself.tbView reloadData];
+        });
+    });
+}
+-(NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    return @"移除";
 }
 @end

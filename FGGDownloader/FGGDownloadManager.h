@@ -59,21 +59,36 @@
                      failure:(FailureHandle)failure;
 
 /**
- *  取消下载
+ *  暂停下载
+ *
+ *  @param url 下载的链接
  */
 -(void)cancelDownloadTask:(NSString *)url;
 /**
- * 取消所有下载任务
- *
+ *  暂停所有下载
  */
 -(void)cancelAllTasks;
 /**
- * 获取上一次的下载进度
+ *  彻底移除下载任务
+ *
+ *  @param url  下载链接
+ *  @param path 文件路径
+ */
+-(void)removeForUrl:(NSString *)url file:(NSString *)path;
+/**
+ *  获取上一次的下载进度
+ *
+ *  @param url 下载链接
+ *
+ *  @return 下载进度
  */
 -(float)lastProgress:(NSString *)url;
-/**获取文件已下载的大小和总大小,格式为:已经下载的大小/文件总大小,如：12.00M/100.00M。
+/**
+ *  获取文件已下载的大小和总大小,格式为:已经下载的大小/文件总大小,如：12.00M/100.00M。
  *
- * @param url 下载链接
+ *  @param url 下载链接
+ *
+ *  @return 有文件大小及总大小组成的字符串
  */
 -(NSString *)filesSize:(NSString *)url;
 

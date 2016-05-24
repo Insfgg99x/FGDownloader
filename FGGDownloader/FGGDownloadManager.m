@@ -52,6 +52,35 @@ static FGGDownloadManager *mgr=nil;
         [_taskDict removeObjectForKey:url];
     }
 }
+/**
+ *  彻底移除下载任务
+ *
+ *  @param url  下载链接
+ *  @param path 文件路径
+ */
+-(void)removeForUrl:(NSString *)url file:(NSString *)path{
+    
+    FGGDownloader *downloader=[_taskDict objectForKey:url];
+    if(downloader){
+        [downloader cancel];
+    }
+    @synchronized (self) {
+        [_taskDict removeObjectForKey:url];
+    }
+    NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
+    NSString *totalLebgthKey=[NSString stringWithFormat:@"%@totalLength",url];
+    NSString *progressKey=[NSString stringWithFormat:@"%@progress",url];
+    [usd removeObjectForKey:totalLebgthKey];
+    [usd removeObjectForKey:progressKey];
+    [usd synchronize];
+    
+    NSFileManager *fileManager=[NSFileManager defaultManager];
+    BOOL fileExist=[fileManager fileExistsAtPath:path];
+    if(fileExist){
+        
+        [fileManager removeItemAtPath:path error:nil];
+    }
+}
 -(void)cancelAllTasks
 {
     [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
