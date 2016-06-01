@@ -148,6 +148,11 @@ static FGGDownloadManager *mgr=nil;
                            completion:completion
                               failure:failure];
 }
+/**
+ *  取消下载任务
+ *
+ *  @param url 下载的链接
+ */
 -(void)cancelDownloadTask:(NSString *)url
 {
     FGGDownloader *downloader=[_taskDict objectForKey:url];
@@ -200,5 +205,9 @@ static FGGDownloadManager *mgr=nil;
 -(NSString *)filesSize:(NSString *)url
 {
     return [FGGDownloader filesSize:url];
+}
+-(void)dealloc{
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
