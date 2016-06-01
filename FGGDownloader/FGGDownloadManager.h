@@ -37,6 +37,7 @@
  Copyright (c) 2015年 夏桂峰. All rights reserved.
  */
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "FGGDownloader.h"
 
 @interface FGGDownloadManager : NSObject

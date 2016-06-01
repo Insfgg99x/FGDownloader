@@ -17,11 +17,15 @@ static FGGDownloadManager *mgr=nil;
 
 @implementation FGGDownloadManager
 {
-    NSMutableDictionary *_taskDict;
+    NSMutableDictionary         *_taskDict;
     /**
      *  排队对列
      */
-    NSMutableArray      *_queque;
+    NSMutableArray              *_queque;
+    /**
+     *  后台进程id
+     */
+    UIBackgroundTaskIdentifier  _backgroudTaskId;
 }
 
 -(instancetype)init
@@ -30,9 +34,54 @@ static FGGDownloadManager *mgr=nil;
     {
         _taskDict=[NSMutableDictionary dictionary];
         _queque=[NSMutableArray array];
+        /**
+         *  注册程序下载完成的通知
+         */
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGGDownloadTaskDidFinishDownloadingNotification object:nil];
+        /**
+         *  注册程序即将失去焦点的通知
+         */
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
+        /**
+         *  注册程序获得焦点的通知
+         */
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidBecomActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
+        /**
+         *  注册程序即将被终结的通知
+         */
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillBeTerminate:) name:UIApplicationWillTerminateNotification object:nil];
+        
     }
     return self;
+}
+/**
+ *  收到程序即将失去焦点的通知，开启后台运行
+ *
+ *  @param sender 通知
+ */
+-(void)downloadTaskWillResign:(NSNotification *)sender{
+    _backgroudTaskId=[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        
+    }];
+}
+/**
+ *  收到程序重新得到焦点的通知，关闭后台
+ *
+ *  @param sender 通知
+ */
+-(void)downloadTaskDidBecomActive:(NSNotification *)sender{
+    
+    [[UIApplication sharedApplication] endBackgroundTask:_backgroudTaskId];
+    _backgroudTaskId=UIBackgroundTaskInvalid;
+}
+/**
+ *  程序将要结束时，取消下载
+ *
+ *  @param sender 通知
+ */
+-(void)downloadTaskWillBeTerminate:(NSNotification *)sender{
+    
+    [[FGGDownloadManager shredManager] cancelAllTasks];
 }
 /**
  *  下载完成通知调用的方法

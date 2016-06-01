@@ -7,12 +7,13 @@
 //
 
 #import "AppDelegate.h"
-#import "FGGDownloadManager.h"
+//#import "FGGDownloadManager.h"
 #import "ViewController.h"
 
 @interface AppDelegate ()
 {
     ViewController *_vc;
+    UIBackgroundTaskIdentifier _bgTaskId;
 }
 @end
 
@@ -25,22 +26,10 @@
     self.window.rootViewController=navi;
     return YES;
 }
-
-- (void)applicationWillResignActive:(UIApplication *)application {
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application {
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application {
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-}
-//程序将要结束时，取消下载
-- (void)applicationWillTerminate:(UIApplication *)application {
-    
-    [[FGGDownloadManager shredManager] cancelAllTasks];
-}
+////程序将要结束时，取消下载
+//- (void)applicationWillTerminate:(UIApplication *)application {
+//    
+//    [[FGGDownloadManager shredManager] cancelAllTasks];
+//}
 
 @end
