@@ -8,11 +8,20 @@
 
 #import "FGGDownloadManager.h"
 
+/**
+ *  最大同时下载任务数，超过将自动存入排队对列中
+ */
+#define kFGGDwonloadMaxTaskCount 5
+
 static FGGDownloadManager *mgr=nil;
 
 @implementation FGGDownloadManager
 {
     NSMutableDictionary *_taskDict;
+    /**
+     *  排队对列
+     */
+    NSMutableArray      *_queque;
 }
 
 -(instancetype)init
@@ -20,10 +29,36 @@ static FGGDownloadManager *mgr=nil;
     if(self=[super init])
     {
         _taskDict=[NSMutableDictionary dictionary];
+        _queque=[NSMutableArray array];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGGDownloadTaskDidFinishDownloadingNotification object:nil];
     }
     return self;
 }
-
+/**
+ *  下载完成通知调用的方法
+ *
+ *  @param sender 通知
+ */
+-(void)downloadTaskDidFinishDownloading:(NSNotification *)sender{
+    //下载完成后，从任务列表中移除下载任务，若总任务数小于5，则从排队对列中取出一个任务，进入下载
+    NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
+    [_taskDict removeObjectForKey:urlString];
+    if(_taskDict.count<kFGGDwonloadMaxTaskCount){
+        
+        if(_queque.count>0){
+            
+            NSDictionary *first=[_queque objectAtIndex:0];
+            
+            [self downloadWithUrlString:first[@"urlString"]
+                                 toPath:first[@"destinationPath"]
+                                process:first[@"process"]
+                             completion:first[@"completion"]
+                                failure:first[@"failure"]];
+            //从排队对列中移除一个下载任务
+            [_queque removeObjectAtIndex:0];
+        }
+    }
+}
 +(instancetype)shredManager
 {
     static dispatch_once_t onceToken;
@@ -34,6 +69,18 @@ static FGGDownloadManager *mgr=nil;
 }
 -(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure
 {
+    //若同时下载的任务数超过最大同时下载任务数，则把下载任务存入对列，在下载完成后，自动进入下载。
+    if(_taskDict.count>=kFGGDwonloadMaxTaskCount){
+        
+        NSDictionary *dict=@{@"urlString":urlString,
+                             @"destinationPath":destinationPath,
+                             @"process":process,
+                             @"completion":completion,
+                             @"failure":failure};
+        [_queque addObject:dict];
+        
+        return;
+    }
     FGGDownloader *downloader=[FGGDownloader downloader];
     @synchronized (self) {
         [_taskDict setObject:downloader forKey:urlString];

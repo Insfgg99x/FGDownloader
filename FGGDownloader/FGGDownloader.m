@@ -175,6 +175,7 @@
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGGDownloadTaskDidFinishDownloadingNotification object:nil userInfo:@{@"urlString":_url_string}];
     if(_completion)
         _completion();
 }

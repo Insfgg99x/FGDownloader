@@ -6,11 +6,16 @@
 //  Copyright (c) 2015年 峰哥哥. All rights reserved.
 //
 /*
-使用的时候导入FGGDownloadManager.h头文件，不是FGGDownloader.h
-方便多下载任务管理
-*/
+ 使用的时候导入FGGDownloadManager.h头文件，不是FGGDownloader.h
+ 方便多下载任务管理
+ */
 
 #import <Foundation/Foundation.h>
+
+/**
+ *  下载完成的通知名
+ */
+static NSString *const FGGDownloadTaskDidFinishDownloadingNotification=@"FGGDownloadTaskDidFinishDownloadingNotification";
 
 //下载过程中回调的代码块，3个参数分别为：下载进度、已下载部分大小/文件大小构成的字符串(如:1.15M/5.27M)、
 //以及文件下载速度字符串(如:512Kb/s)
