@@ -21,7 +21,7 @@ static FGGDownloadManager *mgr=nil;
     /**
      *  排队对列
      */
-    NSMutableArray              *_queque;
+    NSMutableArray              *_queue;
     /**
      *  后台进程id
      */
@@ -33,7 +33,7 @@ static FGGDownloadManager *mgr=nil;
     if(self=[super init])
     {
         _taskDict=[NSMutableDictionary dictionary];
-        _queque=[NSMutableArray array];
+        _queue=[NSMutableArray array];
         _backgroudTaskId=UIBackgroundTaskInvalid;
         /**
          *  注册程序下载完成的通知
@@ -104,9 +104,9 @@ static FGGDownloadManager *mgr=nil;
     [_taskDict removeObjectForKey:urlString];
     if(_taskDict.count<kFGGDwonloadMaxTaskCount){
         
-        if(_queque.count>0){
+        if(_queue.count>0){
             
-            NSDictionary *first=[_queque objectAtIndex:0];
+            NSDictionary *first=[_queue objectAtIndex:0];
             
             [self downloadWithUrlString:first[@"urlString"]
                                  toPath:first[@"destinationPath"]
@@ -114,7 +114,7 @@ static FGGDownloadManager *mgr=nil;
                              completion:first[@"completion"]
                                 failure:first[@"failure"]];
             //从排队对列中移除一个下载任务
-            [_queque removeObjectAtIndex:0];
+            [_queue removeObjectAtIndex:0];
         }
     }
 }
@@ -137,7 +137,7 @@ static FGGDownloadManager *mgr=nil;
                              @"process":process,
                              @"completion":completion,
                              @"failure":failure};
-        [_queque addObject:dict];
+        [_queue addObject:dict];
         
         return;
     }
