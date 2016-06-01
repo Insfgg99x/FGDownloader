@@ -34,6 +34,7 @@ static FGGDownloadManager *mgr=nil;
     {
         _taskDict=[NSMutableDictionary dictionary];
         _queque=[NSMutableArray array];
+        _backgroudTaskId=UIBackgroundTaskInvalid;
         /**
          *  注册程序下载完成的通知
          */
@@ -60,9 +61,13 @@ static FGGDownloadManager *mgr=nil;
  *  @param sender 通知
  */
 -(void)downloadTaskWillResign:(NSNotification *)sender{
-    _backgroudTaskId=[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+    
+    if(_taskDict.count>0){
         
-    }];
+        _backgroudTaskId=[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+            
+        }];
+    }
 }
 /**
  *  收到程序重新得到焦点的通知，关闭后台
@@ -71,8 +76,11 @@ static FGGDownloadManager *mgr=nil;
  */
 -(void)downloadTaskDidBecomActive:(NSNotification *)sender{
     
-    [[UIApplication sharedApplication] endBackgroundTask:_backgroudTaskId];
-    _backgroudTaskId=UIBackgroundTaskInvalid;
+    if(_backgroudTaskId!=UIBackgroundTaskInvalid){
+        
+        [[UIApplication sharedApplication] endBackgroundTask:_backgroudTaskId];
+        _backgroudTaskId=UIBackgroundTaskInvalid;
+    }
 }
 /**
  *  程序将要结束时，取消下载
