@@ -11,7 +11,7 @@
 /**
  *  最大同时下载任务数，超过将自动存入排队对列中
  */
-#define kFGGDwonloadMaxTaskCount 5
+#define kFGGDwonloadMaxTaskCount 2
 
 static FGGDownloadManager *mgr=nil;
 
@@ -166,6 +166,18 @@ static FGGDownloadManager *mgr=nil;
     [downloader cancel];
     @synchronized (self) {
         [_taskDict removeObjectForKey:url];
+    }
+    if(_queue.count>0){
+        
+        NSDictionary *first=[_queue objectAtIndex:0];
+        
+        [self downloadWithUrlString:first[@"urlString"]
+                             toPath:first[@"destinationPath"]
+                            process:first[@"process"]
+                         completion:first[@"completion"]
+                            failure:first[@"failure"]];
+        //从排队对列中移除一个下载任务
+        [_queue removeObjectAtIndex:0];
     }
 }
 /**
