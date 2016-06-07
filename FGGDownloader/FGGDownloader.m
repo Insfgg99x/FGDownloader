@@ -178,11 +178,16 @@
     
     //计算下载进度
     float progress=(float)length/totalLength;
+    
     [[NSUserDefaults standardUserDefaults]setFloat:progress forKey:[NSString stringWithFormat:@"%@progress",_url_string]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     //获取文件大小，格式为：格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
     NSString *sizeString=[FGGDownloader filesSize:_url_string];
+    
+    //发送进度改变的通知(一般情况下不需要用到，只有在触发下载与显示下载进度在不同界面的时候才会用到)
+    NSDictionary *userInfo=@{@"url":_url_string,@"progress":@(progress),@"sizeString":sizeString};
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
     
     //计算网速
     NSString *speedString=@"0.00Kb/s";
