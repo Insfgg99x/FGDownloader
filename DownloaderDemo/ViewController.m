@@ -16,8 +16,6 @@
 
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
-    UIButton        *_downloadBtn;
-    UIProgressView  *_progressView;
     NSMutableArray  *_dataArray;
 }
 @property(nonatomic,strong)UITableView  *tbView;
