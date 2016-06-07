@@ -34,7 +34,6 @@
     [self prepareData];
     [self createTableView];
 }
-
 //添加3个任务模型
 -(void)prepareData
 {

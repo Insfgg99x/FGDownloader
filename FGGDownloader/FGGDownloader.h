@@ -17,9 +17,13 @@
  */
 static NSString *const FGGDownloadTaskDidFinishDownloadingNotification=@"FGGDownloadTaskDidFinishDownloadingNotification";
 /**
- *  系统存储空间不足的通知名，用户可自行注册该通知，收到通知时，暂停下载，并更新界面
+ *  系统存储空间不足的通知名
  */
 static NSString *const FGGInsufficientSystemSpaceNotification=@"FGGInsufficientSystemSpaceNotification";
+/**
+ *  下载进度改变的通知
+ */
+static NSString *const FGGProgressDidChangeNotificaiton=@"FGGProgressDidChangeNotificaiton";
 
 //下载过程中回调的代码块，3个参数分别为：下载进度、已下载部分大小/文件大小构成的字符串(如:1.15M/5.27M)、
 //以及文件下载速度字符串(如:512Kb/s)
