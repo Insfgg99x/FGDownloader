@@ -31,7 +31,7 @@
     if(self=[super init])
     {
         //每0.5秒计算一次文件大小增加部分的尺寸
-        _timer=[NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(getGrowthSize) userInfo:nil repeats:YES];
+        _timer=[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getGrowthSize) userInfo:nil repeats:YES];
     }
     return self;
 }
@@ -114,6 +114,17 @@
     NSString *totalSize=[self convertSize:totalLength];
     return [NSString stringWithFormat:@"%@/%@",currentSize,totalSize];
 }
+/**
+ *  获取系统可用存储空间
+ *
+ *  @return 系统空用存储空间，单位：字节
+ */
+-(NSInteger)systemFreeSpace{
+    
+    NSString *docPath=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSDictionary *dict=[[NSFileManager defaultManager] attributesOfFileSystemForPath:docPath error:nil];
+    return [[dict objectForKey:NSFileSystemFreeSize] integerValue];
+}
 #pragma mark - NSURLConnection
 /**
  * 下载失败
@@ -148,6 +159,18 @@
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [_writeHandle seekToEndOfFile];
+    
+    NSInteger freeSpace=[self systemFreeSpace];
+    if(freeSpace<1024*1024*20){
+        UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"提示" message:@"系统可用存储空间不足20M" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *confirm=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+        [alertController addAction:confirm];
+        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
+        //发送系统存储空间不足的通知,用户可自行注册该通知，收到通知时，暂停下载，并更新界面
+        [[NSNotificationCenter defaultCenter] postNotificationName:FGGInsufficientSystemSpaceNotification object:nil userInfo:@{@"urlString":_url_string}];
+        return;
+    }
+    
     [_writeHandle writeData:data];
     NSInteger length=[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
@@ -163,7 +186,7 @@
     
     //计算网速
     NSString *speedString=@"0.00Kb/s";
-    NSString *growString=[FGGDownloader convertSize:_growth*2];
+    NSString *growString=[FGGDownloader convertSize:_growth*(1.0/0.1)];
     speedString=[NSString stringWithFormat:@"%@/s",growString];
     
     //回调下载过程中的代码块
@@ -189,10 +212,10 @@
     if(length<1024)
         return [NSString stringWithFormat:@"%ldB",(long)length];
     else if(length>=1024&&length<1024*1024)
-        return [NSString stringWithFormat:@"%.1fK",(float)length/1024];
+        return [NSString stringWithFormat:@"%.0fK",(float)length/1024];
     else if(length >=1024*1024&&length<1024*1024*1024)
-        return [NSString stringWithFormat:@"%.2fM",(float)length/(1024*1024)];
+        return [NSString stringWithFormat:@"%.1fM",(float)length/(1024*1024)];
     else
-        return [NSString stringWithFormat:@"%.2fG",(float)length/(1024*1024*1024)];
+        return [NSString stringWithFormat:@"%.1fG",(float)length/(1024*1024*1024)];
 }
 @end

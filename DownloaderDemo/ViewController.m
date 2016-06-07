@@ -35,7 +35,7 @@
     [self createTableView];
 }
 
-//添加2个任务模型
+//添加3个任务模型
 -(void)prepareData
 {
     _dataArray=[NSMutableArray array];
@@ -50,6 +50,12 @@
     anotherModel.url=@"http://android-mirror.bugly.qq.com:8080/eclipse_mirror/juno/content.jar";
     anotherModel.destinationPath=[kCachePath stringByAppendingPathComponent:anotherModel.name];
     [_dataArray addObject:anotherModel];
+    
+    TaskModel *third=[TaskModel model];
+    third.name=@"Dota2";
+    third.url=@"http://dota2.dl.wanmei.com/dota2/client/DOTA2Setup20160329.zip";
+    third.destinationPath=[kCachePath stringByAppendingString:third.name];
+    [_dataArray addObject:third];
 }
 //创建表视图
 -(void)createTableView

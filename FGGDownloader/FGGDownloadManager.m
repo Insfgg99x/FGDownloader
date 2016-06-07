@@ -35,25 +35,29 @@ static FGGDownloadManager *mgr=nil;
         _taskDict=[NSMutableDictionary dictionary];
         _queue=[NSMutableArray array];
         _backgroudTaskId=UIBackgroundTaskInvalid;
-        /**
-         *  注册程序下载完成的通知
-         */
+        //注册系统内存不足的通知
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemSpaceInsufficient:) name:FGGInsufficientSystemSpaceNotification object:nil];
+        //注册程序下载完成的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGGDownloadTaskDidFinishDownloadingNotification object:nil];
-        /**
-         *  注册程序即将失去焦点的通知
-         */
+        //注册程序即将失去焦点的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
-        /**
-         *  注册程序获得焦点的通知
-         */
+        //注册程序获得焦点的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidBecomActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-        /**
-         *  注册程序即将被终结的通知
-         */
+        //注册程序即将被终结的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillBeTerminate:) name:UIApplicationWillTerminateNotification object:nil];
         
     }
     return self;
+}
+/**
+ *  收到系统存储空间不足的通知调用的方法
+ *
+ *  @param sender 系统存储空间不足的通知
+ */
+-(void)systemSpaceInsufficient:(NSNotification *)sender{
+    
+    NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
+    [[FGGDownloadManager shredManager] cancelDownloadTask:urlString];
 }
 /**
  *  收到程序即将失去焦点的通知，开启后台运行
