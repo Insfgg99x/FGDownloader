@@ -30,9 +30,6 @@
  -->4.在下载出错的回调代码块中处理出错信息。在出错的回调代码块中或者暂停下载任务时，
       调用[[FGGDownloadManager sharedManager] cancelDownloadTask:url]方法取消/暂停下载任务；
  
- -->5.AppDelegate的程序将要退出的applicationWillTerminate:方法中，
-      取消所有下载任务：[FGGDownloadManager sharedManager] cancelAllTasks]。
- 
  ==============================================================================================
  Copyright (c) 2015年 夏桂峰. All rights reserved.
  */
