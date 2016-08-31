@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
   #s.description  = <<-DESC
                    #DESC
 
-  s.screenshots  = "https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif"
+  #s.screenshots  = "https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif"
 
 
   #  When using multiple platforms
