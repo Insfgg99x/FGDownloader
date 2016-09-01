@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.version      = "1.0"
   s.summary      = "一个用于断点下载的轻量级框架"
   s.ios.deployment_target = "6.0"
-  s.homepage     = "http://cgpointzero.top"
+  s.homepage     = "https://github.com/Insfgg99x/FGGDownloader"
   s.license      = { :type => 'zlib', :file => 'LICENCE.md' }
   s.author             = { "CGPointZero" => "newbox0512@yahoo.com" }	
   s.social_media_url   = "http://www.jianshu.com/users/c3f2e8c87dc4/latest_articles"
