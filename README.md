@@ -7,7 +7,7 @@
 ---------------------------------------------------------------------------------------------<br>
 ##基于UNSURLConnection封装的断点续传类，用于大文件下载，退出程序后，下次启动接着下载。<br>
 <br>
-#Install
+#Install:
 ##Cocopods:
 `pod 'FGGDownloader', '~> 1.0'`
 ##Manual:
@@ -35,6 +35,6 @@ failure:(FailureHandle)failure];<br>
 调用[[FGGDownloadManager sharedManager] cancelDownloadTask:url]方法取消/暂停下载任务；<br>
 <br>
 ==============================================================================================<br>
-Copyright (c) 2015年 夏桂峰. All rights reserved.<br>
+Copyright(c) 2016 CGPointZero. All rights reserved.<br>
 
 
