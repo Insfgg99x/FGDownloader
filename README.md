@@ -5,14 +5,14 @@
 <br>
 ##FGGDownloadManager用法简介<br>
 ---------------------------------------------------------------------------------------------<br>
-#基于UNSURLConnection封装的断点续传类，用于大文件下载，退出程序后，下次启动接着下载。<br>
+##基于UNSURLConnection封装的断点续传类，用于大文件下载，退出程序后，下次启动接着下载。<br>
 <br>
-##Install
-#Cocopods:
+#Install
+##Cocopods:
 `pod 'FGGDownloader', '~> 1.0'`
-#Manual:
+##Manual:
 download [FGGDownloader](https://github.com/Insfgg99x/FGGDownloader.git) and drag it into project。
-##Useage:
+#Useage:
 -->1.在项目中导入FGGDownloadManager.h头文件；<br>
 -->2.搭建UI时，设置显示进度的UIProgressView的进度值:[[FGGDownloadManager sharedManager] lastProgressWithUrl:url],<br>
 这个方法的返回值是float类型的；<br>
