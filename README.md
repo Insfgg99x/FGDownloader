@@ -2,6 +2,7 @@
 [![Cocoapods Compatible](https://img.shields.io/cocoapods/v/SnapKit.svg)](https://img.shields.io/cocoapods/v/SnapKit.svg)
 [![Pod Version](http://img.shields.io/cocoapods/v/SDWebImage.svg?style=flat)](http://cocoadocs.org/docsets/XGFDownloader/)
 [![Pod Platform](http://img.shields.io/cocoapods/p/SDWebImage.svg?style=flat)](http://cocoadocs.org/docsets/XGFDownloader/)
+
 用于断点续传，退出程序后，下次启动后，恢复下载从上次下载位置开始下载<br>
 <br>
 ![演示](https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif)<br>
