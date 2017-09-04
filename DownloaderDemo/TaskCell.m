@@ -11,14 +11,6 @@
 
 @implementation TaskCell
 
-- (void)awakeFromNib {
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-}
-
 - (IBAction)downloadAction:(UIButton *)sender {
     if(self.downloadBlock)
         self.downloadBlock(sender);
