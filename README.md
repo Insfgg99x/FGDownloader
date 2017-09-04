@@ -13,7 +13,7 @@
 <br>
 #Install:
 ##Cocopods:
-`pod 'FGGDownloader', '~> 1.1'`
+`pod 'FGGDownloader', '~> 1.2'`
 ##Manual:
 download [FGGDownloader](https://github.com/Insfgg99x/FGGDownloader.git) and drag it into project。
 #Useage:
