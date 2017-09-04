@@ -1,12 +1,12 @@
 //
-//  FGGDownloader.h
+//  FGDownloader.h
 //  大文件下载(断点续传)
 //
 //  Created by 夏桂峰 on 15/9/21.
 //  Copyright (c) 2015年 峰哥哥. All rights reserved.
 //
 /*
- 使用的时候导入FGGDownloadManager.h头文件，不是FGGDownloader.h
+ 使用的时候导入FGDownloadManager.h头文件，不是FGDownloader.h
  方便多下载任务管理
  */
 
@@ -15,15 +15,15 @@
 /**
  *  下载完成的通知名
  */
-static NSString *const FGGDownloadTaskDidFinishDownloadingNotification=@"FGGDownloadTaskDidFinishDownloadingNotification";
+static NSString *const FGDownloadTaskDidFinishDownloadingNotification=@"FGDownloadTaskDidFinishDownloadingNotification";
 /**
  *  系统存储空间不足的通知名
  */
-static NSString *const FGGInsufficientSystemSpaceNotification=@"FGGInsufficientSystemSpaceNotification";
+static NSString *const FGInsufficientSystemSpaceNotification=@"FGInsufficientSystemSpaceNotification";
 /**
  *  下载进度改变的通知
  */
-static NSString *const FGGProgressDidChangeNotificaiton=@"FGGProgressDidChangeNotificaiton";
+static NSString *const FGProgressDidChangeNotificaiton=@"FGProgressDidChangeNotificaiton";
 
 //下载过程中回调的代码块，3个参数分别为：下载进度、已下载部分大小/文件大小构成的字符串(如:1.15M/5.27M)、
 //以及文件下载速度字符串(如:512Kb/s)
@@ -31,7 +31,7 @@ typedef void (^ProcessHandle)(float progress,NSString *sizeString,NSString *spee
 typedef void (^CompletionHandle)();
 typedef void (^FailureHandle)(NSError *error);
 
-@interface FGGDownloader : NSObject<NSURLConnectionDataDelegate,NSURLConnectionDelegate>
+@interface FGDownloader : NSObject<NSURLConnectionDataDelegate,NSURLConnectionDelegate>
 
 //下载过程中回调的代码块，会多次调用。
 @property(nonatomic,copy,readonly)ProcessHandle process;

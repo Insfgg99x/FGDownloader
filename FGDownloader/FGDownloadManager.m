@@ -1,21 +1,21 @@
 //
-//  FGGDownloadManager.m
+//  FGDownloadManager.m
 //  DownloaderDemo
 //
 //  Created by 夏桂峰 on 15/9/23.
 //  Copyright © 2015年 夏桂峰. All rights reserved.
 //
 
-#import "FGGDownloadManager.h"
+#import "FGDownloadManager.h"
 
 /**
  *  最大同时下载任务数，超过将自动存入排队对列中
  */
-#define kFGGDwonloadMaxTaskCount 2
+#define kFGDwonloadMaxTaskCount 2
 
-static FGGDownloadManager *mgr=nil;
+static FGDownloadManager *mgr=nil;
 
-@implementation FGGDownloadManager
+@implementation FGDownloadManager
 {
     NSMutableDictionary         *_taskDict;
     /**
@@ -36,9 +36,9 @@ static FGGDownloadManager *mgr=nil;
         _queue=[NSMutableArray array];
         _backgroudTaskId=UIBackgroundTaskInvalid;
         //注册系统内存不足的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemSpaceInsufficient:) name:FGGInsufficientSystemSpaceNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemSpaceInsufficient:) name:FGInsufficientSystemSpaceNotification object:nil];
         //注册程序下载完成的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGGDownloadTaskDidFinishDownloadingNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGDownloadTaskDidFinishDownloadingNotification object:nil];
         //注册程序即将失去焦点的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
         //注册程序获得焦点的通知
@@ -57,7 +57,7 @@ static FGGDownloadManager *mgr=nil;
 -(void)systemSpaceInsufficient:(NSNotification *)sender{
     
     NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
-    [[FGGDownloadManager shredManager] cancelDownloadTask:urlString];
+    [[FGDownloadManager shredManager] cancelDownloadTask:urlString];
 }
 /**
  *  收到程序即将失去焦点的通知，开启后台运行
@@ -93,7 +93,7 @@ static FGGDownloadManager *mgr=nil;
  */
 -(void)downloadTaskWillBeTerminate:(NSNotification *)sender{
     
-    [[FGGDownloadManager shredManager] cancelAllTasks];
+    [[FGDownloadManager shredManager] cancelAllTasks];
 }
 /**
  *  下载完成通知调用的方法
@@ -106,7 +106,7 @@ static FGGDownloadManager *mgr=nil;
     //则从排队对列中取出一个任务，进入下载
     NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
     [_taskDict removeObjectForKey:urlString];
-    if(_taskDict.count<kFGGDwonloadMaxTaskCount){
+    if(_taskDict.count<kFGDwonloadMaxTaskCount){
         
         if(_queue.count>0){
             
@@ -126,7 +126,7 @@ static FGGDownloadManager *mgr=nil;
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        mgr=[[FGGDownloadManager alloc]init];
+        mgr=[[FGDownloadManager alloc]init];
     });
     return mgr;
 }
@@ -134,7 +134,7 @@ static FGGDownloadManager *mgr=nil;
 {
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
-    if(_taskDict.count>=kFGGDwonloadMaxTaskCount){
+    if(_taskDict.count>=kFGDwonloadMaxTaskCount){
         
         NSDictionary *dict=@{@"urlString":urlString,
                              @"destinationPath":destinationPath,
@@ -145,7 +145,7 @@ static FGGDownloadManager *mgr=nil;
         
         return;
     }
-    FGGDownloader *downloader=[FGGDownloader downloader];
+    FGDownloader *downloader=[FGDownloader downloader];
     @synchronized (self) {
         [_taskDict setObject:downloader forKey:urlString];
     }
@@ -162,7 +162,7 @@ static FGGDownloadManager *mgr=nil;
  */
 -(void)cancelDownloadTask:(NSString *)url
 {
-    FGGDownloader *downloader=[_taskDict objectForKey:url];
+    FGDownloader *downloader=[_taskDict objectForKey:url];
     [downloader cancel];
     @synchronized (self) {
         [_taskDict removeObjectForKey:url];
@@ -188,7 +188,7 @@ static FGGDownloadManager *mgr=nil;
  */
 -(void)removeForUrl:(NSString *)url file:(NSString *)path{
     
-    FGGDownloader *downloader=[_taskDict objectForKey:url];
+    FGDownloader *downloader=[_taskDict objectForKey:url];
     if(downloader){
         [downloader cancel];
     }
@@ -212,18 +212,18 @@ static FGGDownloadManager *mgr=nil;
 -(void)cancelAllTasks
 {
     [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        FGGDownloader *downloader=obj;
+        FGDownloader *downloader=obj;
         [downloader cancel];
         [_taskDict removeObjectForKey:key];
     }];
 }
 -(float)lastProgress:(NSString *)url
 {
-    return [FGGDownloader lastProgress:url];
+    return [FGDownloader lastProgress:url];
 }
 -(NSString *)filesSize:(NSString *)url
 {
-    return [FGGDownloader filesSize:url];
+    return [FGDownloader filesSize:url];
 }
 -(void)dealloc{
     

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-//#import "FGGDownloadManager.h"
+//#import "FGDownloadManager.h"
 #import "ViewController.h"
 
 @interface AppDelegate ()
@@ -29,7 +29,7 @@
 ////程序将要结束时，取消下载
 //- (void)applicationWillTerminate:(UIApplication *)application {
 //    
-//    [[FGGDownloadManager shredManager] cancelAllTasks];
+//    [[FGDownloadManager shredManager] cancelAllTasks];
 //}
 
 @end

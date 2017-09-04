@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		45D99A061CF4323B0015623E /* FGGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D99A051CF4323B0015623E /* FGGDownloadManager.m */; };
 		45D99A091CF432560015623E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D99A081CF432560015623E /* ViewController.m */; };
+		C3888A301F5D47DC009EE0DD /* FGDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */; };
+		C3888A311F5D47DC009EE0DD /* FGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */; };
 		E85AD0351BAFC0E600588FC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0341BAFC0E600588FC9 /* main.m */; };
 		E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0371BAFC0E600588FC9 /* AppDelegate.m */; };
 		E85AD03E1BAFC0E600588FC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E85AD03C1BAFC0E600588FC9 /* Main.storyboard */; };
 		E85AD0401BAFC0E600588FC9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E85AD03F1BAFC0E600588FC9 /* Images.xcassets */; };
 		E85AD0431BAFC0E600588FC9 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = E85AD0411BAFC0E600588FC9 /* LaunchScreen.xib */; };
 		E85AD04F1BAFC0E600588FC9 /* DownloaderDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD04E1BAFC0E600588FC9 /* DownloaderDemoTests.m */; };
-		E85AD05D1BAFC1D100588FC9 /* FGGDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */; };
 		E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F64B0C1BB1010000899E45 /* TaskCell.m */; };
 		E8F64B0F1BB1010000899E45 /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E8F64B0D1BB1010000899E45 /* TaskCell.xib */; };
 		E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E8F64B111BB1033C00899E45 /* TaskModel.m */; };
@@ -32,10 +32,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		45D99A041CF4323B0015623E /* FGGDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGGDownloadManager.h; sourceTree = "<group>"; };
-		45D99A051CF4323B0015623E /* FGGDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGGDownloadManager.m; sourceTree = "<group>"; };
 		45D99A071CF432560015623E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		45D99A081CF432560015623E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		C3888A2C1F5D47DC009EE0DD /* FGDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloader.h; sourceTree = "<group>"; };
+		C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloader.m; sourceTree = "<group>"; };
+		C3888A2E1F5D47DC009EE0DD /* FGDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloadManager.h; sourceTree = "<group>"; };
+		C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloadManager.m; sourceTree = "<group>"; };
 		E85AD02F1BAFC0E600588FC9 /* DownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85AD0331BAFC0E600588FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E85AD0341BAFC0E600588FC9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -47,8 +49,6 @@
 		E85AD0481BAFC0E600588FC9 /* DownloaderDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DownloaderDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85AD04D1BAFC0E600588FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E85AD04E1BAFC0E600588FC9 /* DownloaderDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DownloaderDemoTests.m; sourceTree = "<group>"; };
-		E85AD0591BAFC1D100588FC9 /* FGGDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGGDownloader.h; sourceTree = "<group>"; };
-		E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGGDownloader.m; sourceTree = "<group>"; wrapsLines = 1; };
 		E8F64B0B1BB1010000899E45 /* TaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
 		E8F64B0C1BB1010000899E45 /* TaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
 		E8F64B0D1BB1010000899E45 /* TaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
@@ -74,10 +74,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C3888A2B1F5D47DC009EE0DD /* FGDownloader */ = {
+			isa = PBXGroup;
+			children = (
+				C3888A2C1F5D47DC009EE0DD /* FGDownloader.h */,
+				C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */,
+				C3888A2E1F5D47DC009EE0DD /* FGDownloadManager.h */,
+				C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */,
+			);
+			path = FGDownloader;
+			sourceTree = "<group>";
+		};
 		E85AD0261BAFC0E600588FC9 = {
 			isa = PBXGroup;
 			children = (
-				E85AD0581BAFC1D100588FC9 /* FGGDownloader */,
+				C3888A2B1F5D47DC009EE0DD /* FGDownloader */,
 				E85AD0311BAFC0E600588FC9 /* DownloaderDemo */,
 				E85AD04B1BAFC0E600588FC9 /* DownloaderDemoTests */,
 				E85AD0301BAFC0E600588FC9 /* Products */,
@@ -137,17 +148,6 @@
 				E85AD04D1BAFC0E600588FC9 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E85AD0581BAFC1D100588FC9 /* FGGDownloader */ = {
-			isa = PBXGroup;
-			children = (
-				E85AD0591BAFC1D100588FC9 /* FGGDownloader.h */,
-				E85AD05A1BAFC1D100588FC9 /* FGGDownloader.m */,
-				45D99A041CF4323B0015623E /* FGGDownloadManager.h */,
-				45D99A051CF4323B0015623E /* FGGDownloadManager.m */,
-			);
-			path = FGGDownloader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,11 +256,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3888A311F5D47DC009EE0DD /* FGDownloadManager.m in Sources */,
 				45D99A091CF432560015623E /* ViewController.m in Sources */,
-				45D99A061CF4323B0015623E /* FGGDownloadManager.m in Sources */,
-				E85AD05D1BAFC1D100588FC9 /* FGGDownloader.m in Sources */,
 				E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */,
 				E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */,
+				C3888A301F5D47DC009EE0DD /* FGDownloader.m in Sources */,
 				E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */,
 				E85AD0351BAFC0E600588FC9 /* main.m in Sources */,
 			);

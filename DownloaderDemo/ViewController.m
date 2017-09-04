@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "FGGDownloadManager.h"
+#import "FGDownloadManager.h"
 #import "TaskCell.h"
 
 #define kWidth [UIScreen mainScreen].bounds.size.width
@@ -29,7 +29,7 @@
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor whiteColor];
     self.navigationController.navigationBar.barStyle=UIBarStyleBlackOpaque;
-    self.title=@"FGGDownloadManager Demo";
+    self.title=@"FGDownloadManager Demo";
     self.automaticallyAdjustsScrollViewInsets=NO;
     [self prepareData];
     [self createTableView];
@@ -85,7 +85,7 @@
             [sender setTitle:@"暂停" forState:UIControlStateNormal];
             
             //添加下载任务
-            [[FGGDownloadManager shredManager] downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
+            [[FGDownloadManager shredManager] downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
                 //更新进度条的进度值
                 weakCell.progressView.progress=progress;
                 //更新进度值文字
@@ -105,7 +105,7 @@
                 [alert show];
 
             } failure:^(NSError *error) {
-                [[FGGDownloadManager shredManager] cancelDownloadTask:model.url];
+                [[FGDownloadManager shredManager] cancelDownloadTask:model.url];
                 [sender setTitle:@"恢复" forState:UIControlStateNormal];
                 weakCell.speedLabel.hidden=YES;
                 UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
@@ -116,7 +116,7 @@
         else if([sender.currentTitle isEqualToString:@"暂停"])
         {
             [sender setTitle:@"恢复" forState:UIControlStateNormal];
-            [[FGGDownloadManager shredManager] cancelDownloadTask:model.url];
+            [[FGDownloadManager shredManager] cancelDownloadTask:model.url];
             TaskCell *cell=(TaskCell *)[tableView cellForRowAtIndexPath:indexPath];
             cell.speedLabel.hidden=YES;
         }
@@ -131,7 +131,7 @@
 -(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     TaskModel *model=[_dataArray objectAtIndex:indexPath.row];
-    [[FGGDownloadManager shredManager] removeForUrl:model.url file:model.destinationPath];
+    [[FGDownloadManager shredManager] removeForUrl:model.url file:model.destinationPath];
     [_dataArray removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     __weak typeof(self) wkself=self;

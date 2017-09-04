@@ -7,7 +7,7 @@
 //
 
 #import "TaskCell.h"
-#import "FGGDownloadManager.h"
+#import "FGDownloadManager.h"
 
 @implementation TaskCell
 
@@ -32,9 +32,9 @@
     if(exist)
     {
         //获取原来的下载进度
-        _progressView.progress=[[FGGDownloadManager shredManager] lastProgress:model.url];
+        _progressView.progress=[[FGDownloadManager shredManager] lastProgress:model.url];
         //获取原来的文件已下载部分大小及文件总大小
-        _sizeLabel.text=[[FGGDownloadManager shredManager] filesSize:model.url];
+        _sizeLabel.text=[[FGDownloadManager shredManager] filesSize:model.url];
         //原来的进度
         _progressLabel.text=[NSString stringWithFormat:@"%.2f%%",_progressView.progress*100];
     }

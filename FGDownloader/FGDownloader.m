@@ -1,15 +1,15 @@
 //
-//  FGGDownloader.m
+//  FGDownloader.m
 //  大文件下载(断点续传)
 //
 //  Created by 夏桂峰 on 15/9/21.
 //  Copyright (c) 2015年 峰哥哥. All rights reserved.
 //
 
-#import "FGGDownloader.h"
+#import "FGDownloader.h"
 #import <UIKit/UIKit.h>
 
-@implementation FGGDownloader
+@implementation FGDownloader
 {
     NSString        *_url_string;
     NSString        *_destination_path;
@@ -167,7 +167,7 @@
         [alertController addAction:confirm];
         [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
         //发送系统存储空间不足的通知,用户可自行注册该通知，收到通知时，暂停下载，并更新界面
-        [[NSNotificationCenter defaultCenter] postNotificationName:FGGInsufficientSystemSpaceNotification object:nil userInfo:@{@"urlString":_url_string}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:FGInsufficientSystemSpaceNotification object:nil userInfo:@{@"urlString":_url_string}];
         return;
     }
     
@@ -183,15 +183,15 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     
     //获取文件大小，格式为：格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
-    NSString *sizeString=[FGGDownloader filesSize:_url_string];
+    NSString *sizeString=[FGDownloader filesSize:_url_string];
     
     //发送进度改变的通知(一般情况下不需要用到，只有在触发下载与显示下载进度在不同界面的时候才会用到)
     NSDictionary *userInfo=@{@"url":_url_string,@"progress":@(progress),@"sizeString":sizeString};
-    [[NSNotificationCenter defaultCenter] postNotificationName:FGGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
     
     //计算网速
     NSString *speedString=@"0.00Kb/s";
-    NSString *growString=[FGGDownloader convertSize:_growth*(1.0/0.1)];
+    NSString *growString=[FGDownloader convertSize:_growth*(1.0/0.1)];
     speedString=[NSString stringWithFormat:@"%@/s",growString];
     
     //回调下载过程中的代码块
@@ -203,7 +203,7 @@
  */
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:FGGDownloadTaskDidFinishDownloadingNotification object:nil userInfo:@{@"urlString":_url_string}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGDownloadTaskDidFinishDownloadingNotification object:nil userInfo:@{@"urlString":_url_string}];
     if(_completion)
         _completion();
 }
