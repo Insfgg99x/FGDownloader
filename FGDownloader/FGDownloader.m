@@ -15,14 +15,14 @@
     NSString        *_destination_path;
     NSFileHandle    *_writeHandle;
     NSURLConnection *_con;
-    uint32_t        _lastSize;
-    uint32_t        _growth;
+    long long       _lastSize;
+    long long       _growth;
     NSTimer         *_timer;
 }
 //计算一次文件大小增加部分的尺寸
 -(void)getGrowthSize
 {
-    uint32_t size=(uint32_t)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
+    long long size=(long long)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     _growth=size-_lastSize;
     _lastSize=size;
 }
@@ -67,8 +67,8 @@
         BOOL fileExist=[fileManager fileExistsAtPath:destinationPath];
         if(fileExist)
         {
-            uint32_t length=(uint32_t)[[[fileManager attributesOfItemAtPath:destinationPath error:nil] objectForKey:NSFileSize] integerValue];
-            NSString *rangeString=[NSString stringWithFormat:@"bytes=%u-",length];
+            long long length=(long long)[[[fileManager attributesOfItemAtPath:destinationPath error:nil] objectForKey:NSFileSize] integerValue];
+            NSString *rangeString=[NSString stringWithFormat:@"bytes=%lld-",length];
             [request setValue:rangeString forHTTPHeaderField:@"Range"];
         }
         _con=[NSURLConnection connectionWithRequest:request delegate:self];
@@ -101,14 +101,14 @@
 {
     NSString *totalLebgthKey=[NSString stringWithFormat:@"%@totalLength",url];
     NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
-    uint32_t totalLength=(uint32_t)[usd integerForKey:totalLebgthKey];
+    long long totalLength=(long long)[usd integerForKey:totalLebgthKey];
     if(totalLength==0)
     {
         return @"0.00K/0.00K";
     }
     NSString *progressKey=[NSString stringWithFormat:@"%@progress",url];
     float progress=[[NSUserDefaults standardUserDefaults] floatForKey:progressKey];
-    uint32_t currentLength=progress*totalLength;
+    long long currentLength=progress*totalLength;
     
     NSString *currentSize=[self convertSize:currentLength];
     NSString *totalSize=[self convertSize:totalLength];
@@ -119,11 +119,11 @@
  *
  *  @return 系统空用存储空间，单位：字节
  */
--(uint32_t)systemFreeSpace{
+-(long long)systemFreeSpace{
     
     NSString *docPath=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSDictionary *dict=[[NSFileManager defaultManager] attributesOfFileSystemForPath:docPath error:nil];
-    return (uint32_t)[[dict objectForKey:NSFileSystemFreeSize] integerValue];
+    return (long long)[[dict objectForKey:NSFileSystemFreeSize] integerValue];
 }
 #pragma mark - NSURLConnection
 /**
@@ -141,7 +141,7 @@
 {
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
     NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
-    uint32_t totalLength=(uint32_t)[usd integerForKey:key];
+    long long totalLength=(long long)[usd integerForKey:key];
     if(totalLength==0)
     {
         [usd setInteger:response.expectedContentLength forKey:key];
@@ -160,7 +160,7 @@
 {
     [_writeHandle seekToEndOfFile];
     
-    uint32_t freeSpace=[self systemFreeSpace];
+    long long freeSpace=[self systemFreeSpace];
     if(freeSpace<1024*1024*20){
         UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"提示" message:@"系统可用存储空间不足20M" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirm=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
@@ -172,9 +172,9 @@
     }
     
     [_writeHandle writeData:data];
-    uint32_t length=(uint32_t)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
+    long long length=(long long)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
-    uint32_t totalLength=(uint32_t)[[NSUserDefaults standardUserDefaults] integerForKey:key];
+    long long totalLength=(long long)[[NSUserDefaults standardUserDefaults] integerForKey:key];
     
     //计算下载进度
     float progress=(float)length/totalLength;
@@ -212,10 +212,10 @@
  *
  * @prama length  文件大小
  */
-+(NSString *)convertSize:(uint32_t)length
++(NSString *)convertSize:(long long)length
 {
     if(length<1024)
-        return [NSString stringWithFormat:@"%uB",length];
+        return [NSString stringWithFormat:@"%lldB",length];
     else if(length>=1024&&length<1024*1024)
         return [NSString stringWithFormat:@"%.0fK",(float)length/1024];
     else if(length >=1024*1024&&length<1024*1024*1024)
