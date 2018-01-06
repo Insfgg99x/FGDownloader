@@ -2,8 +2,8 @@
 //  ViewController.m
 //  DownloaderDemo
 //
-//  Created by 夏桂峰 on 15/9/21.
-//  Copyright (c) 2015年 夏桂峰. All rights reserved.
+//  Created by xgf on 15/9/21.
+//  Copyright (c) 2015年 xgf. All rights reserved.
 //
 
 #import "ViewController.h"

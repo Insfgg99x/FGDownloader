@@ -2,43 +2,34 @@
 //  FGDownloadManager.m
 //  DownloaderDemo
 //
-//  Created by 夏桂峰 on 15/9/23.
-//  Copyright © 2015年 夏桂峰. All rights reserved.
+//  Created by xgf on 15/9/23.
+//  Copyright © 2015年 xgf. All rights reserved.
 //
 
 #import "FGDownloadManager.h"
 
-/**
- *  最大同时下载任务数，超过将自动存入排队对列中
- */
+/**最大同时下载任务数，超过将自动存入排队对列中*/
 #define kFGDwonloadMaxTaskCount 2
 
 static FGDownloadManager *mgr=nil;
 
-@implementation FGDownloadManager
-{
+@implementation FGDownloadManager {
     NSMutableDictionary         *_taskDict;
-    /**
-     *  排队对列
-     */
+    /**排队对列*/
     NSMutableArray              *_queue;
-    /**
-     *  后台进程id
-     */
+    /**  后台进程id*/
     UIBackgroundTaskIdentifier  _backgroudTaskId;
 }
 
--(instancetype)init
-{
-    if(self=[super init])
-    {
+-(instancetype)init {
+    if(self=[super init]) {
         _taskDict=[NSMutableDictionary dictionary];
         _queue=[NSMutableArray array];
         _backgroudTaskId=UIBackgroundTaskInvalid;
         //注册系统内存不足的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemSpaceInsufficient:) name:FGInsufficientSystemSpaceNotification object:nil];
         //注册程序下载完成的通知
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGDownloadTaskDidFinishDownloadingNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskDidFinishDownloading:) name:FGDownloadTaskDidFinishNotification object:nil];
         //注册程序即将失去焦点的通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadTaskWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
         //注册程序获得焦点的通知

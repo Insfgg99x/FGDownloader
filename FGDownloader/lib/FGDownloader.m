@@ -1,16 +1,15 @@
 //
 //  FGDownloader.m
-//  大文件下载(断点续传)
+//  DownloaderDemo
 //
-//  Created by 夏桂峰 on 15/9/21.
-//  Copyright (c) 2015年 峰哥哥. All rights reserved.
+//  Created by xgf on 15/9/21.
+//  Copyright (c) 2015年 xgf. All rights reserved.
 //
 
 #import "FGDownloader.h"
 #import <UIKit/UIKit.h>
 
-@implementation FGDownloader
-{
+@implementation FGDownloader {
     NSString        *_url_string;
     NSString        *_destination_path;
     NSFileHandle    *_writeHandle;
@@ -20,16 +19,13 @@
     NSTimer         *_timer;
 }
 //计算一次文件大小增加部分的尺寸
--(void)getGrowthSize
-{
+-(void)getGrowthSize {
     long long size=(long long)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     _growth=size-_lastSize;
     _lastSize=size;
 }
--(instancetype)init
-{
-    if(self=[super init])
-    {
+-(instancetype)init {
+    if(self=[super init]) {
         //每0.5秒计算一次文件大小增加部分的尺寸
         _timer=[NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(getGrowthSize) userInfo:nil repeats:YES];
     }
@@ -38,8 +34,7 @@
 /**
  * 获取对象的类方法
  */
-+(instancetype)downloader
-{
++(instancetype)downloader {
     return [[[self class] alloc]init];
 }
 /**
@@ -51,10 +46,8 @@
  *  @param  completion      下载完成回调的代码块
  *  @param  failure         下载失败的回调代码块
  */
--(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure
-{
-    if(urlString&&destinationPath)
-    {
+-(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure {
+    if(urlString&&destinationPath) {
         _url_string=urlString;
         _destination_path=destinationPath;
         _process=process;
@@ -65,8 +58,7 @@
         NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
         NSFileManager *fileManager=[NSFileManager defaultManager];
         BOOL fileExist=[fileManager fileExistsAtPath:destinationPath];
-        if(fileExist)
-        {
+        if(fileExist) {
             long long length=(long long)[[[fileManager attributesOfItemAtPath:destinationPath error:nil] objectForKey:NSFileSize] integerValue];
             NSString *rangeString=[NSString stringWithFormat:@"bytes=%lld-",length];
             [request setValue:rangeString forHTTPHeaderField:@"Range"];
@@ -77,33 +69,29 @@
 /**
  *  取消下载
  */
--(void)cancel
-{
+-(void)cancel {
     [self.con cancel];
     self.con=nil;
-    if(_timer)
-    {
+    if(_timer){
         [_timer invalidate];
     }
 }
 /**
  * 获取上一次的下载进度
  */
-+(float)lastProgress:(NSString *)url
-{
-    if(url)
++(float)lastProgress:(NSString *)url {
+    if(url){
         return [[NSUserDefaults standardUserDefaults]floatForKey:[NSString stringWithFormat:@"%@progress",url]];
+    }
     return 0.0;
 }
 /**获取文件已下载的大小和总大小,格式为:已经下载的大小/文件总大小,如：12.00M/100.00M
  */
-+(NSString *)filesSize:(NSString *)url
-{
++(NSString *)filesSize:(NSString *)url {
     NSString *totalLebgthKey=[NSString stringWithFormat:@"%@totalLength",url];
     NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
     long long totalLength=(long long)[usd integerForKey:totalLebgthKey];
-    if(totalLength==0)
-    {
+    if(totalLength==0){
         return @"0.00K/0.00K";
     }
     NSString *progressKey=[NSString stringWithFormat:@"%@progress",url];
@@ -119,7 +107,7 @@
  *
  *  @return 系统空用存储空间，单位：字节
  */
--(long long)systemFreeSpace{
+-(long long)systemFreeSpace {
     
     NSString *docPath=[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     NSDictionary *dict=[[NSFileManager defaultManager] attributesOfFileSystemForPath:docPath error:nil];
@@ -129,39 +117,36 @@
 /**
  * 下载失败
  */
--(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
-{
-    if(_failure)
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    if(_failure){
         _failure(error);
+    }
 }
 /**
  * 接收到响应请求
  */
--(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
     NSUserDefaults *usd=[NSUserDefaults standardUserDefaults];
     long long totalLength=(long long)[usd integerForKey:key];
-    if(totalLength==0)
-    {
+    if(totalLength==0) {
         [usd setInteger:response.expectedContentLength forKey:key];
         [usd synchronize];
     }
     NSFileManager *fileManager=[NSFileManager defaultManager];
     BOOL fileExist=[fileManager fileExistsAtPath:_destination_path];
-    if(!fileExist)
+    if(!fileExist){
         [fileManager createFileAtPath:_destination_path contents:nil attributes:nil];
+    }
     _writeHandle=[NSFileHandle fileHandleForWritingAtPath:_destination_path];
 }
 /**
  * 下载过程，会多次调用
  */
--(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [_writeHandle seekToEndOfFile];
-    
     long long freeSpace=[self systemFreeSpace];
-    if(freeSpace<1024*1024*20){
+    if(freeSpace<1024*1024*20) {
         UIAlertController *alertController=[UIAlertController alertControllerWithTitle:@"提示" message:@"系统可用存储空间不足20M" preferredStyle:UIAlertControllerStyleAlert];
         UIAlertAction *confirm=[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
         [alertController addAction:confirm];
@@ -170,15 +155,12 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:FGInsufficientSystemSpaceNotification object:nil userInfo:@{@"urlString":_url_string}];
         return;
     }
-    
     [_writeHandle writeData:data];
     long long length=(long long)[[[[NSFileManager defaultManager] attributesOfItemAtPath:_destination_path error:nil] objectForKey:NSFileSize] integerValue];
     NSString *key=[NSString stringWithFormat:@"%@totalLength",_url_string];
     long long totalLength=(long long)[[NSUserDefaults standardUserDefaults] integerForKey:key];
-    
     //计算下载进度
     float progress=(float)length/totalLength;
-    
     [[NSUserDefaults standardUserDefaults]setFloat:progress forKey:[NSString stringWithFormat:@"%@progress",_url_string]];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
@@ -195,32 +177,33 @@
     speedString=[NSString stringWithFormat:@"%@/s",growString];
     
     //回调下载过程中的代码块
-    if(_process)
+    if(_process){
         _process(progress,sizeString,speedString);
+    }
 }
 /**
  * 下载完成
  */
--(void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:FGDownloadTaskDidFinishDownloadingNotification object:nil userInfo:@{@"urlString":_url_string}];
-    if(_completion)
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGDownloadTaskDidFinishNotification object:nil userInfo:@{@"urlString":_url_string}];
+    if(_completion){
         _completion();
+    }
 }
 /**
  * 计算缓存的占用存储大小
  *
  * @prama length  文件大小
  */
-+(NSString *)convertSize:(long long)length
-{
-    if(length<1024)
++ (NSString *)convertSize:(long long)length {
+    if(length<1024) {
         return [NSString stringWithFormat:@"%lldB",length];
-    else if(length>=1024&&length<1024*1024)
+    }else if(length>=1024&&length<1024*1024) {
         return [NSString stringWithFormat:@"%.0fK",(float)length/1024];
-    else if(length >=1024*1024&&length<1024*1024*1024)
+    }else if(length >=1024*1024&&length<1024*1024*1024) {
         return [NSString stringWithFormat:@"%.1fM",(float)length/(1024*1024)];
-    else
+    }else {
         return [NSString stringWithFormat:@"%.1fG",(float)length/(1024*1024*1024)];
+    }
 }
 @end

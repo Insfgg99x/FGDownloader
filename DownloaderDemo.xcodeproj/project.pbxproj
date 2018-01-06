@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		45D99A091CF432560015623E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 45D99A081CF432560015623E /* ViewController.m */; };
-		C3888A301F5D47DC009EE0DD /* FGDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */; };
-		C3888A311F5D47DC009EE0DD /* FGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */; };
+		C37E0D862000793F000E92BB /* FGDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D7F2000793F000E92BB /* FGDownloader.m */; };
+		C37E0D872000793F000E92BB /* FGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D812000793F000E92BB /* FGDownloadManager.m */; };
+		C37E0D882000793F000E92BB /* FGUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D832000793F000E92BB /* FGUploader.m */; };
+		C37E0D892000793F000E92BB /* FGUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D852000793F000E92BB /* FGUploadManager.m */; };
 		E85AD0351BAFC0E600588FC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0341BAFC0E600588FC9 /* main.m */; };
 		E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0371BAFC0E600588FC9 /* AppDelegate.m */; };
 		E85AD03E1BAFC0E600588FC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E85AD03C1BAFC0E600588FC9 /* Main.storyboard */; };
@@ -34,10 +36,16 @@
 /* Begin PBXFileReference section */
 		45D99A071CF432560015623E /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		45D99A081CF432560015623E /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		C3888A2C1F5D47DC009EE0DD /* FGDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloader.h; sourceTree = "<group>"; };
-		C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloader.m; sourceTree = "<group>"; };
-		C3888A2E1F5D47DC009EE0DD /* FGDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloadManager.h; sourceTree = "<group>"; };
-		C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloadManager.m; sourceTree = "<group>"; };
+		C37E0D7B20007543000E92BB /* FGCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FGCommon.h; sourceTree = "<group>"; };
+		C37E0D7C200075DE000E92BB /* FGHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FGHeader.h; sourceTree = "<group>"; };
+		C37E0D7E2000793F000E92BB /* FGDownloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloader.h; sourceTree = "<group>"; };
+		C37E0D7F2000793F000E92BB /* FGDownloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloader.m; sourceTree = "<group>"; };
+		C37E0D802000793F000E92BB /* FGDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGDownloadManager.h; sourceTree = "<group>"; };
+		C37E0D812000793F000E92BB /* FGDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGDownloadManager.m; sourceTree = "<group>"; };
+		C37E0D822000793F000E92BB /* FGUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGUploader.h; sourceTree = "<group>"; };
+		C37E0D832000793F000E92BB /* FGUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGUploader.m; sourceTree = "<group>"; };
+		C37E0D842000793F000E92BB /* FGUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGUploadManager.h; sourceTree = "<group>"; };
+		C37E0D852000793F000E92BB /* FGUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGUploadManager.m; sourceTree = "<group>"; };
 		E85AD02F1BAFC0E600588FC9 /* DownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85AD0331BAFC0E600588FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E85AD0341BAFC0E600588FC9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -74,13 +82,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C37E0D7D2000793F000E92BB /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				C37E0D7E2000793F000E92BB /* FGDownloader.h */,
+				C37E0D7F2000793F000E92BB /* FGDownloader.m */,
+				C37E0D802000793F000E92BB /* FGDownloadManager.h */,
+				C37E0D812000793F000E92BB /* FGDownloadManager.m */,
+				C37E0D822000793F000E92BB /* FGUploader.h */,
+				C37E0D832000793F000E92BB /* FGUploader.m */,
+				C37E0D842000793F000E92BB /* FGUploadManager.h */,
+				C37E0D852000793F000E92BB /* FGUploadManager.m */,
+			);
+			path = lib;
+			sourceTree = "<group>";
+		};
 		C3888A2B1F5D47DC009EE0DD /* FGDownloader */ = {
 			isa = PBXGroup;
 			children = (
-				C3888A2C1F5D47DC009EE0DD /* FGDownloader.h */,
-				C3888A2D1F5D47DC009EE0DD /* FGDownloader.m */,
-				C3888A2E1F5D47DC009EE0DD /* FGDownloadManager.h */,
-				C3888A2F1F5D47DC009EE0DD /* FGDownloadManager.m */,
+				C37E0D7D2000793F000E92BB /* lib */,
+				C37E0D7B20007543000E92BB /* FGCommon.h */,
+				C37E0D7C200075DE000E92BB /* FGHeader.h */,
 			);
 			path = FGDownloader;
 			sourceTree = "<group>";
@@ -256,12 +278,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C3888A311F5D47DC009EE0DD /* FGDownloadManager.m in Sources */,
+				C37E0D882000793F000E92BB /* FGUploader.m in Sources */,
+				C37E0D872000793F000E92BB /* FGDownloadManager.m in Sources */,
 				45D99A091CF432560015623E /* ViewController.m in Sources */,
+				C37E0D862000793F000E92BB /* FGDownloader.m in Sources */,
 				E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */,
 				E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */,
-				C3888A301F5D47DC009EE0DD /* FGDownloader.m in Sources */,
 				E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */,
+				C37E0D892000793F000E92BB /* FGUploadManager.m in Sources */,
 				E85AD0351BAFC0E600588FC9 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
