@@ -12,6 +12,7 @@
 		C37E0D872000793F000E92BB /* FGDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D812000793F000E92BB /* FGDownloadManager.m */; };
 		C37E0D882000793F000E92BB /* FGUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D832000793F000E92BB /* FGUploader.m */; };
 		C37E0D892000793F000E92BB /* FGUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D852000793F000E92BB /* FGUploadManager.m */; };
+		C37E0D8C20008140000E92BB /* FGTool.m in Sources */ = {isa = PBXBuildFile; fileRef = C37E0D8B20008140000E92BB /* FGTool.m */; };
 		E85AD0351BAFC0E600588FC9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0341BAFC0E600588FC9 /* main.m */; };
 		E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E85AD0371BAFC0E600588FC9 /* AppDelegate.m */; };
 		E85AD03E1BAFC0E600588FC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E85AD03C1BAFC0E600588FC9 /* Main.storyboard */; };
@@ -46,6 +47,8 @@
 		C37E0D832000793F000E92BB /* FGUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGUploader.m; sourceTree = "<group>"; };
 		C37E0D842000793F000E92BB /* FGUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FGUploadManager.h; sourceTree = "<group>"; };
 		C37E0D852000793F000E92BB /* FGUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FGUploadManager.m; sourceTree = "<group>"; };
+		C37E0D8A20008140000E92BB /* FGTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FGTool.h; sourceTree = "<group>"; };
+		C37E0D8B20008140000E92BB /* FGTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FGTool.m; sourceTree = "<group>"; };
 		E85AD02F1BAFC0E600588FC9 /* DownloaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DownloaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E85AD0331BAFC0E600588FC9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E85AD0341BAFC0E600588FC9 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -93,6 +96,8 @@
 				C37E0D832000793F000E92BB /* FGUploader.m */,
 				C37E0D842000793F000E92BB /* FGUploadManager.h */,
 				C37E0D852000793F000E92BB /* FGUploadManager.m */,
+				C37E0D8A20008140000E92BB /* FGTool.h */,
+				C37E0D8B20008140000E92BB /* FGTool.m */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -216,7 +221,7 @@
 		E85AD0271BAFC0E600588FC9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
+				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "夏桂峰";
 				TargetAttributes = {
 					E85AD02E1BAFC0E600588FC9 = {
@@ -284,6 +289,7 @@
 				C37E0D862000793F000E92BB /* FGDownloader.m in Sources */,
 				E8F64B121BB1033C00899E45 /* TaskModel.m in Sources */,
 				E8F64B0E1BB1010000899E45 /* TaskCell.m in Sources */,
+				C37E0D8C20008140000E92BB /* FGTool.m in Sources */,
 				E85AD0381BAFC0E600588FC9 /* AppDelegate.m in Sources */,
 				C37E0D892000793F000E92BB /* FGUploadManager.m in Sources */,
 				E85AD0351BAFC0E600588FC9 /* main.m in Sources */,
@@ -336,14 +342,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -382,14 +394,20 @@
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;

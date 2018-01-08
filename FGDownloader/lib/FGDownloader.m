@@ -7,6 +7,7 @@
 //
 
 #import "FGDownloader.h"
+#import "FGTool.h"
 #import <UIKit/UIKit.h>
 
 @implementation FGDownloader {
@@ -42,12 +43,16 @@
  *
  *  @param urlString        下载的链接
  *  @param destinationPath  下载的文件的保存路径
- *  @param  process         下载过程中回调的代码块，会多次调用
- *  @param  completion      下载完成回调的代码块
- *  @param  failure         下载失败的回调代码块
+ *  @param  process         下载过程中回调，会多次调用
+ *  @param  completion      下载完成的回调
+ *  @param  failure         下载失败的回调
  */
--(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure {
-    if(urlString&&destinationPath) {
+-(void)downloadUrl:(NSString *)urlString
+            toPath:(NSString *)destinationPath
+           process:(FGProcessHandle)process
+        completion:(FGCompletionHandle)completion
+           failure:(FGFailureHandle)failure {
+    if(urlString && destinationPath) {
         _url_string=urlString;
         _destination_path=destinationPath;
         _process=process;
@@ -56,6 +61,39 @@
         
         NSURL *url=[NSURL URLWithString:urlString];
         NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+        NSFileManager *fileManager=[NSFileManager defaultManager];
+        BOOL fileExist=[fileManager fileExistsAtPath:destinationPath];
+        if(fileExist) {
+            long long length=(long long)[[[fileManager attributesOfItemAtPath:destinationPath error:nil] objectForKey:NSFileSize] integerValue];
+            NSString *rangeString=[NSString stringWithFormat:@"bytes=%lld-",length];
+            [request setValue:rangeString forHTTPHeaderField:@"Range"];
+        }
+        _con=[NSURLConnection connectionWithRequest:request delegate:self];
+    }
+}
+- (void)downloadHost:(NSString *)host
+               param:(NSString *)p
+              toPath:(NSString *)destinationPath
+             process:(FGProcessHandle)process
+          completion:(FGCompletionHandle)completion
+             failure:(FGFailureHandle)failure {
+    if(host && destinationPath) {
+        if(p != nil){
+            _url_string=[NSString stringWithFormat:@"%@?%@",host,p];
+        }else{
+            _url_string = host;
+        }
+        _destination_path=destinationPath;
+        _process=process;
+        _completion=completion;
+        _failure=failure;
+        
+        NSURL *url=[NSURL URLWithString:host];
+        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+        request.HTTPMethod = @"POST";
+        if(p != nil){
+            request.HTTPBody = [p dataUsingEncoding:NSUTF8StringEncoding];
+        }
         NSFileManager *fileManager=[NSFileManager defaultManager];
         BOOL fileExist=[fileManager fileExistsAtPath:destinationPath];
         if(fileExist) {
@@ -98,8 +136,8 @@
     float progress=[[NSUserDefaults standardUserDefaults] floatForKey:progressKey];
     long long currentLength=progress*totalLength;
     
-    NSString *currentSize=[self convertSize:currentLength];
-    NSString *totalSize=[self convertSize:totalLength];
+    NSString *currentSize=[FGTool convertSize:currentLength];
+    NSString *totalSize=[FGTool convertSize:totalLength];
     return [NSString stringWithFormat:@"%@/%@",currentSize,totalSize];
 }
 /**
@@ -173,7 +211,7 @@
     
     //计算网速
     NSString *speedString=@"0.00Kb/s";
-    NSString *growString=[FGDownloader convertSize:_growth*(1.0/0.1)];
+    NSString *growString=[FGTool convertSize:_growth*(1.0/0.1)];
     speedString=[NSString stringWithFormat:@"%@/s",growString];
     
     //回调下载过程中的代码块
@@ -190,20 +228,5 @@
         _completion();
     }
 }
-/**
- * 计算缓存的占用存储大小
- *
- * @prama length  文件大小
- */
-+ (NSString *)convertSize:(long long)length {
-    if(length<1024) {
-        return [NSString stringWithFormat:@"%lldB",length];
-    }else if(length>=1024&&length<1024*1024) {
-        return [NSString stringWithFormat:@"%.0fK",(float)length/1024];
-    }else if(length >=1024*1024&&length<1024*1024*1024) {
-        return [NSString stringWithFormat:@"%.1fM",(float)length/(1024*1024)];
-    }else {
-        return [NSString stringWithFormat:@"%.1fG",(float)length/(1024*1024*1024)];
-    }
-}
+
 @end

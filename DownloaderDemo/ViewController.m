@@ -85,7 +85,7 @@
             [sender setTitle:@"暂停" forState:UIControlStateNormal];
             
             //添加下载任务
-            [[FGDownloadManager shredManager] downloadWithUrlString:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
+            [[FGDownloadManager shredManager] downloadUrl:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
                 //更新进度条的进度值
                 weakCell.progressView.progress=progress;
                 //更新进度值文字

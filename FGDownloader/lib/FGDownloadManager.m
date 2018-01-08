@@ -101,15 +101,17 @@ static FGDownloadManager *mgr=nil;
         
         if(_queue.count>0){
             
-            NSDictionary *first=[_queue objectAtIndex:0];
-            
-            [self downloadWithUrlString:first[@"urlString"]
-                                 toPath:first[@"destinationPath"]
-                                process:first[@"process"]
-                             completion:first[@"completion"]
-                                failure:first[@"failure"]];
-            //从排队对列中移除一个下载任务
-            [_queue removeObjectAtIndex:0];
+            @synchronized(_queue){
+                NSDictionary *first=[_queue objectAtIndex:0];
+                
+                [self downloadUrl:first[@"urlString"]
+                                     toPath:first[@"destinationPath"]
+                                    process:first[@"process"]
+                                 completion:first[@"completion"]
+                                    failure:first[@"failure"]];
+                //从排队对列中移除一个下载任务
+                [_queue removeObjectAtIndex:0];
+            }
         }
     }
 }
@@ -121,7 +123,7 @@ static FGDownloadManager *mgr=nil;
     });
     return mgr;
 }
--(void)downloadWithUrlString:(NSString *)urlString toPath:(NSString *)destinationPath process:(ProcessHandle)process completion:(CompletionHandle)completion failure:(FailureHandle)failure
+-(void)downloadUrl:(NSString *)urlString toPath:(NSString *)destinationPath process:(FGProcessHandle)process completion:(FGCompletionHandle)completion failure:(FGFailureHandle)failure
 {
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
@@ -140,11 +142,48 @@ static FGDownloadManager *mgr=nil;
     @synchronized (self) {
         [_taskDict setObject:downloader forKey:urlString];
     }
-    [downloader downloadWithUrlString:urlString
+    [downloader downloadUrl:urlString
                                toPath:destinationPath
                               process:process
                            completion:completion
                               failure:failure];
+}
+- (void)downloadHost:(NSString *)host
+               param:(NSString *)p
+              toPath:(NSString *)destinationPath
+             process:(FGProcessHandle)process
+          completion:(FGCompletionHandle)completion
+             failure:(FGFailureHandle)failure {
+    
+    //若同时下载的任务数超过最大同时下载任务数，
+    //则把下载任务存入对列，在下载完成后，自动进入下载。
+    NSString *tmpUrl = @"";
+    if(p != nil){
+        tmpUrl=[NSString stringWithFormat:@"%@?%@",host,p];
+    }else{
+        tmpUrl = host;
+    }
+    if(_taskDict.count>=kFGDwonloadMaxTaskCount){
+    
+        NSDictionary *dict=@{@"urlString":tmpUrl,
+                             @"destinationPath":destinationPath,
+                             @"process":process,
+                             @"completion":completion,
+                             @"failure":failure};
+        [_queue addObject:dict];
+        
+        return;
+    }
+    FGDownloader *downloader=[FGDownloader downloader];
+    @synchronized (self) {
+        [_taskDict setObject:downloader forKey:tmpUrl];
+    }
+    [downloader downloadHost:host
+                       param:p
+                      toPath:destinationPath
+                     process:process
+                  completion:completion
+                     failure:failure];
 }
 /**
  *  取消下载任务
@@ -162,7 +201,7 @@ static FGDownloadManager *mgr=nil;
         
         NSDictionary *first=[_queue objectAtIndex:0];
         
-        [self downloadWithUrlString:first[@"urlString"]
+        [self downloadUrl:first[@"urlString"]
                              toPath:first[@"destinationPath"]
                             process:first[@"process"]
                          completion:first[@"completion"]
@@ -202,11 +241,15 @@ static FGDownloadManager *mgr=nil;
 }
 -(void)cancelAllTasks
 {
-    [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        FGDownloader *downloader=obj;
-        [downloader cancel];
-        [_taskDict removeObjectForKey:key];
-    }];
+    NSMutableArray *keys = [NSMutableArray array];
+    @synchronized(_taskDict) {
+        [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            FGDownloader *downloader=obj;
+            [downloader cancel];
+            [keys addObject:key];
+        }];
+        [_taskDict removeObjectsForKeys:keys];
+    }
 }
 -(float)lastProgress:(NSString *)url
 {
