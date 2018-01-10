@@ -65,9 +65,7 @@
 ```
 ###Install
 - Cocopods
-`pod 'FGGDownloader', '~> 2.0'`
+`pod 'FGGDownloader', '~> 2.1'`
 - Manual
 下载 [FGGDownloader](https://github.com/Insfgg99x/FGGDownloader.git) 并引入项目，导入`FGHeader.h`文件
-
-
 
