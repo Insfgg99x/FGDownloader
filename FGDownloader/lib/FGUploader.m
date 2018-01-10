@@ -12,13 +12,16 @@
 
 @implementation FGUploader {
     
-    NSString        *_url_string;
+    NSString        *_task_key;
     NSURLConnection *_con;
     int64_t         _writenLength;
     NSDate          *_refrenceDate;
 }
 + (instancetype)uploader {
     return [[[self class] alloc]init];
+}
+static NSData * encode(NSString *s) {
+    return [s dataUsingEncoding:NSUTF8StringEncoding];
 }
 /**
  *  断点上传
@@ -33,7 +36,7 @@
  *  @param  failure     失败的回调
  */
 - (void)upload:(NSString *)host
-        parama:(NSString *)p
+        parama:(NSDictionary *)p
           file:(NSData *)data
       mimeType:(NSString *)type
       fileName:(NSString *)n1
@@ -41,49 +44,61 @@
        process:(FGProcessHandle)process
     completion:(FGCompletionHandle)completion
        failure:(FGFailureHandle)failure {
-    if(host) {
-        if(p != nil){
-            _url_string=[NSString stringWithFormat:@"%@?%@",host,p];
-        }else{
-            _url_string = host;
+    if(!host || ![host hasPrefix:@"http"]) {
+        NSError *error = [NSError errorWithDomain:@"FGUploader.upload" code:-1 userInfo:@{NSLocalizedDescriptionKey:@"--host不能为空--"}];
+        if (failure) {
+            failure(error);
         }
-        _process=process;
-        _completion=completion;
-        _failure=failure;
-        
-        //固定拼接格式第一部分
-        NSMutableString *top = [NSMutableString string];
-        [top appendFormat:@"%@%@\n", boundary, randomId];
-        [top appendFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"\n", n1, n2];
-        [top appendFormat:@"Content-Type: %@\n\n", type];
-        
-        //固定拼接第二部分
-        NSMutableString *buttom = [NSMutableString string];
-        [buttom appendFormat:@"%@%@\n", boundary, randomId];
-        [buttom appendString:@"Content-Disposition: form-data; name=\"submit\"\n\n"];
-        [buttom appendString:@"Submit\n"];
-        [buttom appendFormat:@"%@%@--\n", boundary, randomId];
-        
-        //容器
-        NSMutableData *fromData=[NSMutableData data];
-        //非文件参数
-        if(p != nil) {
-            [fromData appendData:[p dataUsingEncoding:NSUTF8StringEncoding]];
-        }
-        [fromData appendData:[top dataUsingEncoding:NSUTF8StringEncoding]];
-        //文件数据部分
-        [fromData appendData:data];
-        [fromData appendData:[buttom dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        NSURL *url=[NSURL URLWithString:host];
-        NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
-        request.HTTPMethod = @"POST";
-        request.HTTPBody=fromData;
-        [request addValue:@(fromData.length).stringValue forHTTPHeaderField:@"Content-Length"];
-        NSString *strContentType=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-        [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
-        _con=[NSURLConnection connectionWithRequest:request delegate:self];
+        return;
     }
+    if(p != nil){
+        _task_key=[NSString stringWithFormat:@"%@?%@",host,[p description]];
+    }else{
+        _task_key = host;
+    }
+    _process=process;
+    _completion=completion;
+    _failure=failure;
+    
+    NSString *bountry = @"haha";
+    NSString *line = @"\r\n";
+    NSMutableData *container = [NSMutableData data];
+    [container appendData:encode(@"--")];
+    [container appendData:encode(bountry)];
+    [container appendData:encode(line)];
+    NSString *disposition = [NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"; filename=\"%@\"", n1,n2];
+    [container appendData:encode(disposition)];
+    [container appendData:encode(line)];
+    NSString *typedispos = [NSString stringWithFormat:@"Content-Type: %@",type];
+    [container appendData:encode(typedispos)];
+    [container appendData:encode(line)];
+    [container appendData:encode(line)];
+    [container appendData:data];
+    [container appendData:encode(line)];
+    [p enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [container appendData:encode(@"--")];
+        [container appendData:encode(bountry)];
+        [container appendData:encode(line)];
+        NSString *dipos = [NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"", key];
+        [container appendData:encode(dipos)];
+        [container appendData:encode(line)];
+        [container appendData:encode(line)];
+        [container appendData:encode([obj description])];
+        [container appendData:encode(line)];
+    }];
+    [container appendData:encode(@"--")];
+    [container appendData:encode(bountry)];
+    [container appendData:encode(@"--")];
+    [container appendData:encode(line)];
+    
+    //可变请求
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:host]];
+    request.HTTPBody=container;
+    request.HTTPMethod=@"POST";
+    [request addValue:@(container.length).stringValue forHTTPHeaderField:@"Content-Length"];
+    NSString *strContentType=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", bountry];
+    [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
+    _con=[NSURLConnection connectionWithRequest:request delegate:self];
 }
 /**
  *  取消下载
@@ -112,7 +127,7 @@
         NSString *progressInfo = [NSString stringWithFormat:@"%@/%@", [FGTool convertSize:bytesWritten], [FGTool convertSize:totalBytesExpectedToWrite]];
         CGFloat progress = bytesWritten / totalBytesExpectedToWrite;
         //发送进度改变的通知(一般情况下不需要用到，只有在触发下载与显示下载进度在不同界面的时候才会用到)
-        NSDictionary *userInfo=@{@"url":_url_string,@"progress":@(progress),@"sizeString":progressInfo};
+        NSDictionary *userInfo=@{@"url":_task_key,@"progress":@(progress),@"sizeString":progressInfo};
         [[NSNotificationCenter defaultCenter] postNotificationName:FGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
         //回调下载过程中的代码块
         if(_process){
@@ -127,7 +142,7 @@
  * 下载完成
  */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [[NSNotificationCenter defaultCenter] postNotificationName:FGUploadTaskDidFinishNotification object:nil userInfo:@{@"urlString":_url_string}];
+    [[NSNotificationCenter defaultCenter] postNotificationName:FGUploadTaskDidFinishNotification object:nil userInfo:@{@"key":_task_key}];
     if(_completion){
         _completion();
     }

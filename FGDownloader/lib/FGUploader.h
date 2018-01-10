@@ -31,7 +31,7 @@
  *  @param  failure     失败的回调
  */
 - (void)upload:(NSString *)host
-        parama:(NSString *)p
+        parama:(NSDictionary *)p
           file:(NSData *)data
       mimeType:(NSString *)type
       fileName:(NSString *)n1

@@ -77,8 +77,8 @@ static FGUploadManager *uploadMgr=nil;
     
     //下载完成后，从任务列表中移除下载任务，若总任务数小于最大同时下载任务数，
     //则从排队对列中取出一个任务，进入下载
-    NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
-    [_taskDict removeObjectForKey:urlString];
+    NSString *key=[sender.userInfo objectForKey:@"key"];
+    [_taskDict removeObjectForKey:key];
     if(_taskDict.count<kFGDwonloadMaxTaskCount){
         
         if(_queue.count>0){
@@ -109,7 +109,7 @@ static FGUploadManager *uploadMgr=nil;
     return uploadMgr;
 }
 - (void)upload:(NSString *)host
-        parama:(NSString *)p
+        parama:(NSDictionary *)p
           file:(NSData *)data
       mimeType:(NSString *)type
       fileName:(NSString *)n1
