@@ -42,7 +42,7 @@
 - upload
 ```
 /**
-*  断点上传
+*  上传
 *  @param  host        服务器地址
 *  @param  data        文件二进制数据
 *  @param  p           post请求的参数
