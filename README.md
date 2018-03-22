@@ -1,10 +1,10 @@
 # FGGDownloadManager<br>
 
-断点续传，文件上传
+***断点续传，文件上传***
 
 ![演示](https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif)
 
-###Usage
+### Usage
 - download
 ```
 /**
@@ -63,7 +63,7 @@
     completion:(FGCompletionHandle)completion
        failure:(FGFailureHandle)failure;
 ```
-###Install
+### Install
 - Cocopods
 `pod 'FGGDownloader', '~> 2.1'`
 - Manual
