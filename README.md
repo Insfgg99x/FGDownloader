@@ -60,12 +60,16 @@
       fileName:(NSString *)n1
           name:(NSString *)n2
        process:(FGProcessHandle)process
-    completion:(FGCompletionHandle)completion
+    completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure;
 ```
 ### Install
 - Cocopods
-`pod 'FGGDownloader', '~> 2.1'`
+```
+pod repo update
+pod 'FGGDownloader', '~> 2.2'
+pod install
+```
 - Manual
 下载 [FGGDownloader](https://github.com/Insfgg99x/FGGDownloader.git) 并引入项目，导入`FGHeader.h`文件
 
