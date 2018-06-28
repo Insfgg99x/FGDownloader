@@ -1,8 +1,12 @@
-# FGGDownloadManager<br>
+# FGGDownloadManager
 
-***断点续传，文件上传***
+断点续传下载文件，文件上传显示进度
 
-![演示](https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif)
+[![Version](https://img.shields.io/cocoapods/v/FGDownloader.svg?style=flat)](http://cocoadocs.org/docsets/FGVideoEditor)
+[![License](https://img.shields.io/cocoapods/l/FGDownloader.svg?style=flat)](http://cocoadocs.org/docsets/FGVideoEditor)
+[![Platform](https://img.shields.io/cocoapods/p/FGDownloader.svg?style=flat)](http://cocoadocs.org/docsets/FGVideoEditor)
+
+![](https://github.com/Insfgg99x/FGGDownloader/blob/master/demo.gif)
 
 ### Usage
 - download
