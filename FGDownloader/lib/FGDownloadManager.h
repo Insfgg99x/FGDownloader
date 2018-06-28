@@ -29,7 +29,7 @@
 - (void)downloadUrl:(NSString *)urlString
                        toPath:(NSString *)destinationPath
                       process:(FGProcessHandle)process
-                   completion:(FGCompletionHandle)completion
+                   completion:(FGDownloadCompletionHandle)completion
                       failure:(FGFailureHandle)failure;
 /**
  *  断点下载(post)
@@ -45,7 +45,7 @@
                param:(NSString *)p
              toPath:(NSString *)destinationPath
             process:(FGProcessHandle)process
-         completion:(FGCompletionHandle)completion
+         completion:(FGDownloadCompletionHandle)completion
             failure:(FGFailureHandle)failure;
 /**
  *  暂停下载

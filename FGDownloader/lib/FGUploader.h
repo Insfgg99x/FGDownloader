@@ -14,7 +14,7 @@
 
 @property(nonatomic,strong)NSURLConnection           *con;
 @property(nonatomic,copy,readonly)FGProcessHandle    process;//下载进度回调(会多次调用)
-@property(nonatomic,copy,readonly)FGCompletionHandle completion;
+@property(nonatomic,copy,readonly)FGUploadCompletionHandle completion;
 @property(nonatomic,copy,readonly)FGFailureHandle    failure;
 
 + (instancetype)uploader;
@@ -37,7 +37,7 @@
       fileName:(NSString *)n1
           name:(NSString *)n2
        process:(FGProcessHandle)process
-    completion:(FGCompletionHandle)completion
+    completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure;
 /**取消上传*/
 - (void)cancel;

@@ -10,8 +10,7 @@
 
 @implementation TaskModel
 
-+(instancetype)model
-{
++(instancetype)model {
     return [[[self class]alloc] init];
 }
 

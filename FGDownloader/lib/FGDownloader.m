@@ -50,7 +50,7 @@
 -(void)downloadUrl:(NSString *)urlString
             toPath:(NSString *)destinationPath
            process:(FGProcessHandle)process
-        completion:(FGCompletionHandle)completion
+        completion:(FGDownloadCompletionHandle)completion
            failure:(FGFailureHandle)failure {
     if(urlString && destinationPath) {
         _url_string=urlString;
@@ -75,7 +75,7 @@
                param:(NSString *)p
               toPath:(NSString *)destinationPath
              process:(FGProcessHandle)process
-          completion:(FGCompletionHandle)completion
+          completion:(FGDownloadCompletionHandle)completion
              failure:(FGFailureHandle)failure {
     if(host && destinationPath) {
         if(p != nil){

@@ -11,7 +11,7 @@
 
 @interface FGUploadManager : NSObject
 
-+(void)shared;
++(instancetype)shared;
 /**
  *  上传
  *  @param  host        服务器地址
@@ -31,7 +31,7 @@
       fileName:(NSString *)n1
           name:(NSString *)n2
        process:(FGProcessHandle)process
-    completion:(FGCompletionHandle)completion
+    completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure;
 
 - (void)cancelTask:(NSString *)url;

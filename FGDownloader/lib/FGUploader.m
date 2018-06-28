@@ -16,9 +16,10 @@
     NSURLConnection *_con;
     int64_t         _writenLength;
     NSDate          *_refrenceDate;
+    NSMutableData   *_receivedData;
 }
 + (instancetype)uploader {
-    return [[[self class] alloc]init];
+    return [[[self class] alloc] init];
 }
 static NSData * encode(NSString *s) {
     return [s dataUsingEncoding:NSUTF8StringEncoding];
@@ -42,7 +43,7 @@ static NSData * encode(NSString *s) {
       fileName:(NSString *)n1
           name:(NSString *)n2
        process:(FGProcessHandle)process
-    completion:(FGCompletionHandle)completion
+    completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure {
     if(!host || ![host hasPrefix:@"http"]) {
         NSError *error = [NSError errorWithDomain:@"FGUploader.upload" code:-1 userInfo:@{NSLocalizedDescriptionKey:@"--host不能为空--"}];
@@ -113,11 +114,16 @@ static NSData * encode(NSString *s) {
         _failure(error);
     }
 }
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    _receivedData = [NSMutableData data];
+}
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [_receivedData appendData:data];
+}
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
-    
-    if(_refrenceDate == nil){
+    if (_refrenceDate == nil) {
         _refrenceDate = [NSDate date];
-    }else{//计算大致网速
+    } else {//计算大致网速
         NSTimeInterval gap = [[NSDate date] timeIntervalSinceDate:_refrenceDate];
         long long grow = bytesWritten - _writenLength;
         CGFloat speed = grow/gap;//bytes per seconds
@@ -125,7 +131,7 @@ static NSData * encode(NSString *s) {
         NSString *progressExpress=[NSString stringWithFormat:@"%@/s",speedExpress];
         
         NSString *progressInfo = [NSString stringWithFormat:@"%@/%@", [FGTool convertSize:bytesWritten], [FGTool convertSize:totalBytesExpectedToWrite]];
-        CGFloat progress = bytesWritten / totalBytesExpectedToWrite;
+        CGFloat progress = (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite;
         //发送进度改变的通知(一般情况下不需要用到，只有在触发下载与显示下载进度在不同界面的时候才会用到)
         NSDictionary *userInfo=@{@"url":_task_key,@"progress":@(progress),@"sizeString":progressInfo};
         [[NSNotificationCenter defaultCenter] postNotificationName:FGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
@@ -144,7 +150,7 @@ static NSData * encode(NSString *s) {
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [[NSNotificationCenter defaultCenter] postNotificationName:FGUploadTaskDidFinishNotification object:nil userInfo:@{@"key":_task_key}];
     if(_completion){
-        _completion();
+        _completion(_receivedData);
     }
 }
 

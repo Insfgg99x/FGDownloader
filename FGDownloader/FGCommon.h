@@ -10,7 +10,8 @@
 #define FCCommon_h
 
 typedef void (^FGProcessHandle)(float progress,NSString *sizeString,NSString *speedString);
-typedef void (^FGCompletionHandle)(void);
+typedef void (^FGUploadCompletionHandle)(NSData *resultData);
+typedef void (^FGDownloadCompletionHandle)(void);
 typedef void (^FGFailureHandle)(NSError *error);
 
 static NSString *const FGDownloadTaskDidFinishNotification   = @"FGDownloadTaskDidFinishNotification";

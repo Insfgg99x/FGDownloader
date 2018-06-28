@@ -14,7 +14,7 @@
 
 @property(nonatomic,strong)NSURLConnection           *con;
 @property(nonatomic,copy,readonly)FGProcessHandle    process;//下载进度回调(会多次调用)
-@property(nonatomic,copy,readonly)FGCompletionHandle completion;
+@property(nonatomic,copy,readonly)FGDownloadCompletionHandle completion;
 @property(nonatomic,copy,readonly)FGFailureHandle    failure;
 
 + (instancetype)downloader;
@@ -30,7 +30,7 @@
 - (void)downloadUrl:(NSString *)urlString
              toPath:(NSString *)destinationPath
             process:(FGProcessHandle)process
-         completion:(FGCompletionHandle)completion
+         completion:(FGDownloadCompletionHandle)completion
             failure:(FGFailureHandle)failure;
 
 /**
@@ -47,7 +47,7 @@
                param:(NSString *)p
               toPath:(NSString *)destinationPath
              process:(FGProcessHandle)process
-          completion:(FGCompletionHandle)completion
+          completion:(FGDownloadCompletionHandle)completion
              failure:(FGFailureHandle)failure;
 /**取消下载*/
 - (void)cancel;

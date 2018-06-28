@@ -123,7 +123,7 @@ static FGDownloadManager *mgr=nil;
     });
     return mgr;
 }
--(void)downloadUrl:(NSString *)urlString toPath:(NSString *)destinationPath process:(FGProcessHandle)process completion:(FGCompletionHandle)completion failure:(FGFailureHandle)failure
+-(void)downloadUrl:(NSString *)urlString toPath:(NSString *)destinationPath process:(FGProcessHandle)process completion:(FGDownloadCompletionHandle)completion failure:(FGFailureHandle)failure
 {
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
@@ -152,7 +152,7 @@ static FGDownloadManager *mgr=nil;
                param:(NSString *)p
               toPath:(NSString *)destinationPath
              process:(FGProcessHandle)process
-          completion:(FGCompletionHandle)completion
+          completion:(FGDownloadCompletionHandle)completion
              failure:(FGFailureHandle)failure {
     
     //若同时下载的任务数超过最大同时下载任务数，

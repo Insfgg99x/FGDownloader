@@ -14,6 +14,6 @@
 @property(nonatomic,strong)NSString *url;
 @property(nonatomic,strong)NSString *destinationPath;
 
-+(instancetype)model;
++ (instancetype)model;
 
 @end

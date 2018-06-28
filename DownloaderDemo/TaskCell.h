@@ -21,7 +21,7 @@
 @property(nonatomic,copy)void (^downloadBlock)(UIButton *sender);
 
 
--(void)cellWithModel:(TaskModel *)model;
+- (void)cellWithModel:(TaskModel *)model;
 
 
 @end

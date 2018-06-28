@@ -18,8 +18,14 @@ static FGUploadManager *uploadMgr=nil;
     /**  后台进程id*/
     UIBackgroundTaskIdentifier  _backgroudTaskId;
 }
-
--(instancetype)init {
++ (instancetype)shared {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        uploadMgr = [[FGUploadManager alloc] init];
+    });
+    return uploadMgr;
+}
+- (instancetype)init {
     if(self=[super init]) {
         _taskDict=[NSMutableDictionary dictionary];
         _queue=[NSMutableArray array];
@@ -73,8 +79,7 @@ static FGUploadManager *uploadMgr=nil;
  *
  *  @param sender 通知
  */
--(void)taskDidFinishUploading:(NSNotification *)sender{
-    
+- (void)taskDidFinishUploading:(NSNotification *)sender {
     //下载完成后，从任务列表中移除下载任务，若总任务数小于最大同时下载任务数，
     //则从排队对列中取出一个任务，进入下载
     NSString *key=[sender.userInfo objectForKey:@"key"];
@@ -115,7 +120,7 @@ static FGUploadManager *uploadMgr=nil;
       fileName:(NSString *)n1
           name:(NSString *)n2
        process:(FGProcessHandle)process
-    completion:(FGCompletionHandle)completion
+    completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure {
     
     if(!host ||
