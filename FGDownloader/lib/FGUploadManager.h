@@ -11,7 +11,8 @@
 
 @interface FGUploadManager : NSObject
 
-+(instancetype)shared;
++ (instancetype)shared;
+
 /**
  *  上传
  *  @param  host        服务器地址
@@ -35,6 +36,7 @@
        failure:(FGFailureHandle)failure;
 
 - (void)cancelTask:(NSString *)url;
+
 - (void)cancelAllTasks;
 
 @end

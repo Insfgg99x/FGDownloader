@@ -18,12 +18,15 @@
     NSDate          *_refrenceDate;
     NSMutableData   *_receivedData;
 }
+
 + (instancetype)uploader {
     return [[[self class] alloc] init];
 }
+
 static NSData * encode(NSString *s) {
     return [s dataUsingEncoding:NSUTF8StringEncoding];
 }
+
 /**
  *  上传
  *  @param  host        服务器地址
@@ -52,15 +55,14 @@ static NSData * encode(NSString *s) {
         }
         return;
     }
-    if(p != nil){
-        _task_key=[NSString stringWithFormat:@"%@?%@",host,[p description]];
-    }else{
+    if(p != nil) {
+        _task_key = [NSString stringWithFormat:@"%@?%@",host,[p description]];
+    } else {
         _task_key = host;
     }
-    _process=process;
-    _completion=completion;
-    _failure=failure;
-    
+    _process = process;
+    _completion = completion;
+    _failure = failure;
     NSString *bountry = @"haha";
     NSString *line = @"\r\n";
     NSMutableData *container = [NSMutableData data];
@@ -92,34 +94,38 @@ static NSData * encode(NSString *s) {
     [container appendData:encode(@"--")];
     [container appendData:encode(line)];
     
-    //可变请求
-    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:[NSURL URLWithString:host]];
-    request.HTTPBody=container;
-    request.HTTPMethod=@"POST";
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:host]];
+    request.HTTPBody = container;
+    request.HTTPMethod = @"POST";
     [request addValue:@(container.length).stringValue forHTTPHeaderField:@"Content-Length"];
-    NSString *strContentType=[NSString stringWithFormat:@"multipart/form-data; boundary=%@", bountry];
+    NSString *strContentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", bountry];
     [request setValue:strContentType forHTTPHeaderField:@"Content-Type"];
-    _con=[NSURLConnection connectionWithRequest:request delegate:self];
+    _con = [NSURLConnection connectionWithRequest:request delegate:self];
 }
+
 /**
  *  取消下载
  */
--(void)cancel {
+- (void)cancel {
     [self.con cancel];
-    self.con=nil;
+    self.con = nil;
 }
+
 #pragma mark - NSURLConnection
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    if(_failure){
+    if(_failure) {
         _failure(error);
     }
 }
+
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     _receivedData = [NSMutableData data];
 }
+
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     [_receivedData appendData:data];
 }
+
 - (void)connection:(NSURLConnection *)connection didSendBodyData:(NSInteger)bytesWritten totalBytesWritten:(NSInteger)totalBytesWritten totalBytesExpectedToWrite:(NSInteger)totalBytesExpectedToWrite {
     if (_refrenceDate == nil) {
         _refrenceDate = [NSDate date];
@@ -128,15 +134,16 @@ static NSData * encode(NSString *s) {
         long long grow = bytesWritten - _writenLength;
         CGFloat speed = grow/gap;//bytes per seconds
         NSString *speedExpress = [FGTool convertSize:speed];
-        NSString *progressExpress=[NSString stringWithFormat:@"%@/s",speedExpress];
-        
+        NSString *progressExpress = [NSString stringWithFormat:@"%@/s",speedExpress];
         NSString *progressInfo = [NSString stringWithFormat:@"%@/%@", [FGTool convertSize:bytesWritten], [FGTool convertSize:totalBytesExpectedToWrite]];
         CGFloat progress = (CGFloat)totalBytesWritten / (CGFloat)totalBytesExpectedToWrite;
         //发送进度改变的通知(一般情况下不需要用到，只有在触发下载与显示下载进度在不同界面的时候才会用到)
-        NSDictionary *userInfo=@{@"url":_task_key,@"progress":@(progress),@"sizeString":progressInfo};
+        NSDictionary *userInfo = @{@"url":_task_key,
+                                   @"progress":@(progress),
+                                   @"sizeString":progressInfo};
         [[NSNotificationCenter defaultCenter] postNotificationName:FGProgressDidChangeNotificaiton object:nil userInfo:userInfo];
         //回调下载过程中的代码块
-        if(_process){
+        if(_process) {
             _process(progress,progressInfo,progressExpress);
         }
     }
@@ -149,7 +156,7 @@ static NSData * encode(NSString *s) {
  */
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     [[NSNotificationCenter defaultCenter] postNotificationName:FGUploadTaskDidFinishNotification object:nil userInfo:@{@"key":_task_key}];
-    if(_completion){
+    if(_completion) {
         _completion(_receivedData);
     }
 }

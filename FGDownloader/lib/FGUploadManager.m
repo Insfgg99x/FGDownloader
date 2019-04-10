@@ -9,7 +9,7 @@
 #import "FGUploadManager.h"
 #import <UIKit/UIKit.h>
 
-static FGUploadManager *uploadMgr=nil;
+static FGUploadManager *uploadMgr = nil;
 
 @implementation FGUploadManager {
     NSMutableDictionary         *_taskDict;
@@ -18,6 +18,7 @@ static FGUploadManager *uploadMgr=nil;
     /**  后台进程id*/
     UIBackgroundTaskIdentifier  _backgroudTaskId;
 }
+
 + (instancetype)shared {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -25,11 +26,12 @@ static FGUploadManager *uploadMgr=nil;
     });
     return uploadMgr;
 }
+
 - (instancetype)init {
-    if(self=[super init]) {
-        _taskDict=[NSMutableDictionary dictionary];
-        _queue=[NSMutableArray array];
-        _backgroudTaskId=UIBackgroundTaskInvalid;
+    if(self = [super init]) {
+        _taskDict = [NSMutableDictionary dictionary];
+        _queue = [NSMutableArray array];
+        _backgroudTaskId = UIBackgroundTaskInvalid;
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidFinishUploading:) name:FGUploadTaskDidFinishNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskWillResign:) name:UIApplicationWillResignActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(taskDidBecomActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -43,37 +45,35 @@ static FGUploadManager *uploadMgr=nil;
  *
  *  @param sender 通知
  */
--(void)taskWillResign:(NSNotification *)sender{
-    
-    if(_taskDict.count>0){
-        
-        _backgroudTaskId=[[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+- (void)taskWillResign:(NSNotification *)sender {
+    if(_taskDict.count>0) {
+        _backgroudTaskId = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
             
         }];
     }
 }
+
 /**
  *  收到程序重新得到焦点的通知，关闭后台
  *
  *  @param sender 通知
  */
--(void)taskDidBecomActive:(NSNotification *)sender{
-    
-    if(_backgroudTaskId!=UIBackgroundTaskInvalid){
-        
+- (void)taskDidBecomActive:(NSNotification *)sender {
+    if(_backgroudTaskId != UIBackgroundTaskInvalid) {
         [[UIApplication sharedApplication] endBackgroundTask:_backgroudTaskId];
-        _backgroudTaskId=UIBackgroundTaskInvalid;
+        _backgroudTaskId = UIBackgroundTaskInvalid;
     }
 }
+
 /**
  *  程序将要结束时，取消下载
  *
  *  @param sender 通知
  */
--(void)taskWillBeTerminate:(NSNotification *)sender{
-    
+- (void)taskWillBeTerminate:(NSNotification *)sender {
     [self cancelAllTasks];
 }
+
 /**
  *  下载完成通知调用的方法
  *
@@ -82,15 +82,14 @@ static FGUploadManager *uploadMgr=nil;
 - (void)taskDidFinishUploading:(NSNotification *)sender {
     //下载完成后，从任务列表中移除下载任务，若总任务数小于最大同时下载任务数，
     //则从排队对列中取出一个任务，进入下载
-    NSString *key=[sender.userInfo objectForKey:@"key"];
-    [_taskDict removeObjectForKey:key];
-    if(_taskDict.count<kFGDwonloadMaxTaskCount){
-        
-        if(_queue.count>0){
-            
-            @synchronized(_queue){
-                NSDictionary *first=[_queue objectAtIndex:0];
-                
+    NSString *key = [sender.userInfo objectForKey:@"key"];
+    @synchronized (_taskDict) {
+        [_taskDict removeObjectForKey:key];
+    }
+    if(_taskDict.count < kFGDwonloadMaxTaskCount) {
+        if(_queue.count > 0) {
+            @synchronized(_queue) {
+                NSDictionary *first = [_queue objectAtIndex:0];
                 [self upload:first[@"host"]
                       parama:first[@"paramaters"]
                         file:first[@"data"]
@@ -106,13 +105,15 @@ static FGUploadManager *uploadMgr=nil;
         }
     }
 }
-+(instancetype)shred {
+
++ (instancetype)shred {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        uploadMgr=[[FGUploadManager alloc]init];
+        uploadMgr = [[FGUploadManager alloc]init];
     });
     return uploadMgr;
 }
+
 - (void)upload:(NSString *)host
         parama:(NSDictionary *)p
           file:(NSData *)data
@@ -122,7 +123,6 @@ static FGUploadManager *uploadMgr=nil;
        process:(FGProcessHandle)process
     completion:(FGUploadCompletionHandle)completion
        failure:(FGFailureHandle)failure {
-    
     if(!host ||
        ![host hasPrefix:@"http"] ||
        !type ||
@@ -132,26 +132,24 @@ static FGUploadManager *uploadMgr=nil;
     }
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
-    if(_taskDict.count>=kFGDwonloadMaxTaskCount){
-        
-        NSDictionary *dict=@{@"host":host,
-                             @"mimeType":type,
-                             @"paramaters":p == nil ? @"" : p,
-                             @"data":data,
-                             @"fileName":n1,
-                             @"name":n2,
-                             @"process":process,
-                             @"completion":completion,
-                             @"failure":failure};
+    if(_taskDict.count >= kFGDwonloadMaxTaskCount) {
+        NSDictionary *dict = @{@"host" : host,
+                               @"mimeType" : type,
+                               @"paramaters" : p == nil ? @"" : p,
+                               @"data" : data,
+                               @"fileName" : n1,
+                               @"name" : n2,
+                               @"process" : process,
+                               @"completion" : completion,
+                               @"failure" : failure};
         [_queue addObject:dict];
-        
         return;
     }
-    FGUploader *uploader=[FGUploader uploader];
+    FGUploader *uploader = [FGUploader uploader];
     NSString *key = @"";
-    if(p != nil){
-        key=[NSString stringWithFormat:@"%@?%@",host,p];
-    }else{
+    if(p != nil) {
+        key = [NSString stringWithFormat:@"%@?%@",host,p];
+    } else {
         key = host;
     }
     @synchronized (self) {
@@ -168,17 +166,15 @@ static FGUploadManager *uploadMgr=nil;
              failure:failure];
 }
 
--(void)cancelTask:(NSString *)url {
-    FGUploader *uploader=[_taskDict objectForKey:url];
+- (void)cancelTask:(NSString *)url {
+    FGUploader *uploader = [_taskDict objectForKey:url];
     [uploader cancel];
     @synchronized (_taskDict) {
         [_taskDict removeObjectForKey:url];
     }
     @synchronized(_queue) {
-        if(_queue.count>0){
-            
-            NSDictionary *first=[_queue objectAtIndex:0];
-            
+        if(_queue.count>0) {
+            NSDictionary *first = [_queue objectAtIndex:0];
             [self upload:first[@"host"]
                   parama:first[@"paramaters"]
                     file:first[@"data"]
@@ -193,20 +189,20 @@ static FGUploadManager *uploadMgr=nil;
         }
     }
 }
--(void)cancelAllTasks {
-    
+
+- (void)cancelAllTasks {
     NSMutableArray *keys = [NSMutableArray array];
     @synchronized(_taskDict) {
         [_taskDict enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            FGUploader *uploader=obj;
+            FGUploader *uploader = obj;
             [uploader cancel];
             [keys addObject:key];
         }];
         [_taskDict removeObjectsForKeys:keys];
     }
 }
--(void)dealloc{
-    
+
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 @end
