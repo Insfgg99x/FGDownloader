@@ -92,7 +92,7 @@ static FGDownloadManager *mgr = nil;
 - (void)downloadTaskDidFinishDownloading:(NSNotification *)sender {
     //下载完成后，从任务列表中移除下载任务，若总任务数小于最大同时下载任务数，
     //则从排队对列中取出一个任务，进入下载
-    NSString *urlString=[sender.userInfo objectForKey:@"urlString"];
+    NSString *urlString = [sender.userInfo objectForKey:@"urlString"];
     @synchronized (_taskDict) {
         [_taskDict removeObjectForKey:urlString];
     }
@@ -123,7 +123,7 @@ static FGDownloadManager *mgr = nil;
 - (void)downloadUrl:(NSString *)urlString toPath:(NSString *)destinationPath process:(FGProcessHandle)process completion:(FGDownloadCompletionHandle)completion failure:(FGFailureHandle)failure {
     //若同时下载的任务数超过最大同时下载任务数，
     //则把下载任务存入对列，在下载完成后，自动进入下载。
-    if(_taskDict.count>=kFGDwonloadMaxTaskCount) {
+    if(_taskDict.count >= kFGDwonloadMaxTaskCount) {
         NSDictionary *dict = @{@"urlString":urlString,
                                @"destinationPath":destinationPath,
                                @"process":process,

@@ -56,6 +56,7 @@
     third.destinationPath=[kCachePath stringByAppendingString:third.name];
     [_dataArray addObject:third];
 }
+
 - (void)createUI {
     _tbView=[[UITableView alloc] initWithFrame:CGRectMake(0, 64, kWidth, kHeight-64) style:UITableViewStylePlain];
     _tbView.delegate=self;
@@ -71,6 +72,7 @@
     UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
     self.navigationItem.rightBarButtonItem = uploadItem;
 }
+
 //MARK: - test upload
 - (void)testUpload:(UIButton *)sender {
     sender.enabled = NO;
@@ -108,33 +110,33 @@
     TaskModel *model=_dataArray[indexPath.row];
     [cell cellWithModel:model];
     //点击下载按钮时回调的代码块
-    __weak typeof(cell) weakCell=cell;
-    cell.downloadBlock=^(UIButton *sender) {
+    __weak typeof(cell) weakCell = cell;
+    cell.downloadBlock = ^(UIButton *sender) {
         if([sender.currentTitle isEqualToString:@"开始"]||[sender.currentTitle isEqualToString:@"恢复"]) {
             [sender setTitle:@"暂停" forState:UIControlStateNormal];
             //添加下载任务
             [[FGDownloadManager shredManager] downloadUrl:model.url toPath:model.destinationPath process:^(float progress, NSString *sizeString, NSString *speedString) {
                 //更新进度条的进度值
-                weakCell.progressView.progress=progress;
+                weakCell.progressView.progress = progress;
                 //更新进度值文字
-                weakCell.progressLabel.text=[NSString stringWithFormat:@"%.2f%%",progress*100];
+                weakCell.progressLabel.text = [NSString stringWithFormat:@"%.2f%%",progress*100];
                 //更新文件已下载的大小
-                weakCell.sizeLabel.text=sizeString;
+                weakCell.sizeLabel.text = sizeString;
                 //显示网速
-                weakCell.speedLabel.text=speedString;
+                weakCell.speedLabel.text = speedString;
                 if(speedString)
-                    weakCell.speedLabel.hidden=NO;
+                    weakCell.speedLabel.hidden = NO;
             } completion:^{
                 [sender setTitle:@"完成" forState:UIControlStateNormal];
-                sender.enabled=NO;
-                weakCell.speedLabel.hidden=YES;
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@下载完成✅",model.name] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
+                sender.enabled = NO;
+                weakCell.speedLabel.hidden = YES;
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:[NSString stringWithFormat:@"%@下载完成✅",model.name] delegate:nil cancelButtonTitle:@"好" otherButtonTitles:nil, nil];
                 [alert show];
             } failure:^(NSError *error) {
                 [[FGDownloadManager shredManager] cancelDownloadTask:model.url];
                 [sender setTitle:@"恢复" forState:UIControlStateNormal];
                 weakCell.speedLabel.hidden=YES;
-                UIAlertView *alert=[[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:error.localizedDescription delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
                 [alert show];
 
             }];
@@ -142,26 +144,28 @@
             [sender setTitle:@"恢复" forState:UIControlStateNormal];
             [[FGDownloadManager shredManager] cancelDownloadTask:model.url];
             TaskCell *cell=(TaskCell *)[tableView cellForRowAtIndexPath:indexPath];
-            cell.speedLabel.hidden=YES;
+            cell.speedLabel.hidden = YES;
         }
     };
-    cell.selectionStyle=UITableViewCellSelectionStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
 }
+
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    TaskModel *model=[_dataArray objectAtIndex:indexPath.row];
+    TaskModel *model = [_dataArray objectAtIndex:indexPath.row];
     [[FGDownloadManager shredManager] removeForUrl:model.url file:model.destinationPath];
     [_dataArray removeObjectAtIndex:indexPath.row];
     [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    __weak typeof(self) wkself=self;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [wkself.tbView reloadData];
-        });
-    });
+//    __weak typeof(self) wkself = self;
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [wkself.tbView reloadData];
+//        });
+//    });
 }
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     return @"移除";

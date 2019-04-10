@@ -17,25 +17,25 @@
     }
 }
 - (void)cellWithModel:(TaskModel *)model {
-    _nameLabel.text=model.name;
-    _nameLabel.adjustsFontSizeToFitWidth=YES;
+    _nameLabel.text = model.name;
+    _nameLabel.adjustsFontSizeToFitWidth = YES;
     //检查之前是否已经下载，若已经下载，获取下载进度。
-    BOOL exist=[[NSFileManager defaultManager] fileExistsAtPath:model.destinationPath];
+    BOOL exist = [[NSFileManager defaultManager] fileExistsAtPath:model.destinationPath];
     if(exist) {
         //获取原来的下载进度
-        _progressView.progress=[[FGDownloadManager shredManager] lastProgress:model.url];
+        _progressView.progress = [[FGDownloadManager shredManager] lastProgress:model.url];
         //获取原来的文件已下载部分大小及文件总大小
-        _sizeLabel.text=[[FGDownloadManager shredManager] filesSize:model.url];
+        _sizeLabel.text = [[FGDownloadManager shredManager] filesSize:model.url];
         //原来的进度
-        _progressLabel.text=[NSString stringWithFormat:@"%.2f%%",_progressView.progress*100];
+        _progressLabel.text = [NSString stringWithFormat:@"%.2f%%",_progressView.progress*100];
     }
-    if(_progressView.progress==1.0) {
+    if(_progressView.progress == 1.0) {
         [_downloadBtn setTitle:@"完成" forState:UIControlStateNormal];
-        _downloadBtn.enabled=NO;
-    } else if(_progressView.progress>0.0) {
-        [_downloadBtn setTitle:@"恢复" forState:UIControlStateNormal];
-    } else {
+        _downloadBtn.enabled = NO;
+    } else if(_progressView.progress == 0.0) {
         [_downloadBtn setTitle:@"开始" forState:UIControlStateNormal];
+    } else {//这里是简写，正确的做法是判断是否正在下载中，若正在下载则为“暂停”，否则为“恢复”
+        [_downloadBtn setTitle:@"恢复" forState:UIControlStateNormal];
     }
 }
 @end
